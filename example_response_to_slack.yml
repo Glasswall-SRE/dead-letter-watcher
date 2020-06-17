@@ -1,0 +1,97 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Hi SRE, Oopsie Whoopsie, UwU, You have Service Bus Dead Letters:\nCluster : ${CLUSTER}\nService : ${SERVICE}\nCount : ${COUNT}"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*<fakeLink.datadoglink.com|12345678-1234-1234-1234-1234578>*\nTenant Name: ${TENANT}\nSender:${SENDER}\nReceiver:${RECEIVER}"
+			},
+			"accessory": {
+				"type": "static_select",
+				"placeholder": {
+					"type": "plain_text",
+					"emoji": true,
+					"text": "Select Action"
+				},
+				"options": [
+					{
+						"text": {
+							"type": "plain_text",
+							"emoji": true,
+							"text": "Replay"
+						},
+						"value": "value-0"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"emoji": true,
+							"text": "Reconstruct"
+						},
+						"value": "value-1"
+					}
+				]
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*<fakeLink.datadoglink.com|12345678-1234-1234-1234-1234578>*\nTenant Name: ${TENANT}\nSender:${SENDER}\nReceiver:${RECEIVER}"
+			},
+			"accessory": {
+				"type": "static_select",
+				"placeholder": {
+					"type": "plain_text",
+					"emoji": true,
+					"text": "Select Action"
+				},
+				"options": [
+					{
+						"text": {
+							"type": "plain_text",
+							"emoji": true,
+							"text": "Replay"
+						},
+						"value": "value-0"
+					},
+					{
+						"text": {
+							"type": "plain_text",
+							"emoji": true,
+							"text": "Reconstruct"
+						},
+						"value": "value-1"
+					}
+				]
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Run"
+					},
+					"value": "click_me_123"
+				}
+			]
+		}
+	]
+}
