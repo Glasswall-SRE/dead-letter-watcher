@@ -29,6 +29,7 @@ is to reduce that toil and make it as automated as possible for us to manage.
 ## Non-Functional Requirements
 
 - The service must be monitored by DataDog. Any failed invokations or throttling to be reported to a new Slack Channel #sre-alerts-automation.
+- Any new automation logic defined as interacting with Rebuild for email to automate an action should be added to Victoria so SRE can do these actions manually.
 - Fully deployable via Serverless Framework for every component.
 - CI and CD Pipelines for the whole project.
 - 80% code coverage with unit and intergration tests on all code.
