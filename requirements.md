@@ -15,7 +15,7 @@ is to reduce that toil and make it as automated as possible for us to manage.
   - The senders email address of the dead letter.
   - The recievers email address of the dead letter.
   - The time the email was recieved into the cluster. This can be retrieved from SMTPReciever.
-  - The time the email dead letter.
+  - The time the email dead lettered.
 - The following options must be avaiable within the slack message:
    - Replay the dead letter using victorias mailtoil replay:
      - This means replaying just that specific dead letter through the same queue it dead lettered on.
@@ -28,7 +28,7 @@ is to reduce that toil and make it as automated as possible for us to manage.
 
 ## Non-Functional Requirements
 
-- The service must be monitored by DataDog. Any failed invokations or throttling to be reported to a new Slack Channel #sre-alerts-automation.
+- The service must be monitored by DataDog. Any failed invocations or throttling to be reported to a new Slack Channel #sre-alerts-automation.
 - Any new automation logic defined as interacting with Rebuild for email to automate an action should be added to Victoria so SRE can do these actions manually.
 - Fully deployable via Serverless Framework for every component.
 - CI and CD Pipelines for the whole project.
