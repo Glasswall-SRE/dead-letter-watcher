@@ -1,17 +1,14 @@
 import json
 import slack
 from deadletter_watcher.create_slack_block import create_slack_block
+from deadletter_watcher.secrets import get_secret
 
 def hello(event, context):
     print(f"event:{event}, context:{context}")
-    # Will be moved to secrets manager
-    secrets={
-        'slack-channel':'private',
-        'bot-token':'private'
-    }
 
-    client = slack.WebClient(secrets['bot-token'])
+    secrets = get_secret()
 
+    client = slack.WebClient(secrets['BOT_TOKEN'])
 
     # To Delete ------- \/ \/ \/ \/ \/
     deadletter = {
@@ -30,7 +27,7 @@ def hello(event, context):
     slack_block = create_slack_block("eu-west-cluster","smtp-service", 5, deadletters)
 
     response = client.chat_postMessage(
-        channel=secrets['slack-channel'], 
+        channel=secrets['SLACK_CHANNEL'], 
         text="deadletter", 
         blocks=json.dumps(slack_block)
     )
