@@ -1,0 +1,23 @@
+service: deadletter-watcher
+
+provider:
+  name: aws
+  runtime: python3.8
+
+  region: eu-west-2
+
+package:
+  exclude:
+    - .github/**
+    - event_trigger_deploy/**
+    - LICENSE
+    - README.md
+    - requirements.md
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: listener
+          method: post
