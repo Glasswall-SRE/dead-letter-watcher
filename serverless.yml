@@ -16,7 +16,7 @@ package:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: lambda_function.lambda_handler
     events:
       - http:
           path: listener

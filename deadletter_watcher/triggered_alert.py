@@ -17,6 +17,6 @@ class TriggeredAlert:
                     if dimension['name'] == 'EntityName':
                         return dimension['value']
     
-    def get_cluster(self): #TODO: Service Bus or Cluster
+    def get_service_bus_name(self):
         return self.alert['data']['essentials']['alertTargetIDs'][0]
 

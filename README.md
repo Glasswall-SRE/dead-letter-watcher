@@ -13,6 +13,9 @@ A series of Azure Functions that wait for events to handle dead-letters
     "DL-WATCHER": {
         "SLACK_CHANNEL": str,
         "BOT_TOKEN": str
+    },
+    "SERVICE_BUS_CONNECTION_STRINGS": {
+        { 'str': 'str' }
     }
 }
 ```
