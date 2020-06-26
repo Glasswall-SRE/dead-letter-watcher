@@ -20,3 +20,7 @@ class TriggeredAlert:
     def get_service_bus_name(self):
         return self.alert['data']['essentials']['alertTargetIDs'][0]
 
+    def get_fired_datetime(self):
+        return self.alert['data']['essentials']['firedDateTime']
+
+
