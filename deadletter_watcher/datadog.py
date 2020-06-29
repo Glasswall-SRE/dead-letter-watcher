@@ -6,7 +6,7 @@ import json
 def validate(secrets):
     """Validates datadog API key by contacting GET validate HTTP Request
     Args:
-        secrets: access to the DD_API_KEY required
+        secrets: secrets obtained from get_secret()
     Returns:
         response from validate GET request
     """

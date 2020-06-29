@@ -21,11 +21,27 @@ def get_cluster(service_bus_name: str) -> str:
     return splitted[len(splitted)-1]
 
 def obtain_deadletter_ids(queue: str, cluster: str, secrets: str) -> List[str]:
+    """get all the deadletter ids from DLQ in cluster and queue specified
+    Args:
+        queue: service bus queue name
+        cluster: cluster name to query
+        secrets: secrets obtained from get_secret()
+    Returns:
+        a list of deadletters ID's from the `queue` in `cluster`
+    """
     service_bus_client = sb.connect(secrets['SERVICE_BUS_CONNECTION_STRINGS'][cluster])
     deadletter_ids = sb.get_all_dead_letter_ids(queue, service_bus_client)
     return deadletter_ids
 
 def send_slack_notification(slack_block: List[Dict], secrets):
+    """Makes a call to datadog logs query. To search for log containing
+    sender email, recipient email relating to transaction ID
+    Args:
+        slack_block: a series of blocks to be sent via slack
+        secrets: secrets obtained from get_secret()
+    Returns:
+        response from postMessage event to slack channel
+    """
     slack_client = slack.WebClient(secrets['DL-WATCHER']['BOT_TOKEN'])
     response = slack_client.chat_postMessage(
         channel=secrets['DL-WATCHER']['SLACK_CHANNEL'], 
