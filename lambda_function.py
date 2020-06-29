@@ -9,6 +9,7 @@ import deadletter_watcher.service_bus as sb
 from deadletter_watcher.datadog import datadog_log_query
 from deadletter_watcher.util import get_datetime
 
+
 def get_cluster(service_bus_name: str) -> str:
     """get the cluster name from the service bus namespace name
     Args:
@@ -43,7 +44,7 @@ def lambda_handler(event, context):
     secrets = json.loads(get_secret())
 
     service_bus_name = triggered_alert.get_service_bus_name()
-    queue = triggered_alert.get_service_bus_queue()
+    queue = triggered_alert.get_service_bus_queue_name()
     cluster = get_cluster(service_bus_name)
     triggered_time = triggered_alert.get_fired_datetime()
 

@@ -14,7 +14,7 @@ def create_actions_slack_block():
                     "emoji": True,
                     "text": "Run"
                 },
-                "value": "run_action"
+                "value": "Run"
             }
         ]
     }

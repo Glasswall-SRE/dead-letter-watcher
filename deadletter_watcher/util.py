@@ -1,12 +1,30 @@
 import datetime
 
 def get_datetime(event_utc_time: str):
-    #Check if milliseconds in event_utc_time, if so remove
-    if "." in event_utc_time:
-        new_time = event_utc_time.split(".")
-        event_utc_time = new_time[0]
+    """Create a datetime object from the argument event_utc_time
+    Args:
+        event_utc_time: str in utc form of the datetime to process.
+        Note: millisecond figure will be truncated and removed if present.
 
-    return datetime.datetime.fromisoformat(event_utc_time)
+    Returns:
+        datetime object
+    """
+    try:
+        #Check if milliseconds in event_utc_time, if so remove
+        if "." in event_utc_time:
+            new_time = event_utc_time.split(".")
+            event_utc_time = new_time[0]
 
-def set_datetime(datetime_obj):
+        return datetime.datetime.fromisoformat(event_utc_time)
+    except:
+        raise ValueError("Invalid event_utc_time, unable to create datetime object")
+
+def set_datetime(datetime_obj) -> str:
+    """Create an iso standard datetime string, for query usage e.g. datadog.py
+    Args:
+        datetime_obj: a populate datetime object
+
+    Returns:
+        string in iso format as such `yyyy-mm-ddThh:mm:ssZ`
+    """
     return  datetime_obj.isoformat() + "Z"
