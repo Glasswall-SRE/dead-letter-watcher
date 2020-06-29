@@ -9,48 +9,52 @@ APP_NAME="dead-letter-watcher"
 SHORT_APP_NAME="dl-wtchr"
 
 ENDPOINT=secrets["PULUMI"]["DEADLETTER_WATCHER_ENDPOINT"]
-SERVICE_BUS_RESOURCE_GROUP=secrets["PULUMI"]["SERVICE_BUS_RESOURCE_GROUP"]
-SB_NAMESPACE=secrets["PULUMI"]["SERVICE_BUS_NAMESPACE"]
 QUEUES=secrets["PULUMI"]["SERVICE_BUS_QUEUES"]
 
-#  Create Action Group
-action_group = monitoring.ActionGroup(f"{SHORT_APP_NAME}-ag",
-    short_name=SHORT_APP_NAME,
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    webhook_receivers=[
-        {
-            'name': f"{APP_NAME}-webhook",
-            'service_uri': ENDPOINT,
-        }
-    ]
-)
+clusters = ["dev"]
 
-# Create Metric Alert
-metric_alert = monitoring.MetricAlert(f"{SHORT_APP_NAME}-ma",
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    scopes=azure.servicebus.get_namespace(name=SB_NAMESPACE, resource_group_name=SERVICE_BUS_RESOURCE_GROUP).id,
-    actions=[
-        {
-            'action_group_id' : action_group.id 
-        }
-    ],
-    criterias=[
-        {
-            'aggregation' : 'Average',
-            'metricName' : 'DeadletteredMessages',
-            'metricNamespace' : 'Microsoft.ServiceBus/namespaces',
-            'operator' : 'GreaterThan',
-            'threshold' : 0,
-            'dimensions': [
-                {
-                    'name' : 'EntityName',
-                    'operator' : 'Include',
-                    'values' : QUEUES
-                }
-            ]
-        }
-    ]
-)
+for cluster in clusters:
+    SERVICE_BUS_RESOURCE_GROUP=secrets["PULUMI"]["clusters"][cluster]["SERVICE_BUS_RESOURCE_GROUP"]
+    SB_NAMESPACE=secrets["PULUMI"]["clusters"][cluster]["SERVICE_BUS_NAMESPACE"]
+
+    #  Create Action Group
+    action_group = monitoring.ActionGroup(f"{SHORT_APP_NAME}-ag",
+        short_name=SHORT_APP_NAME,
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        webhook_receivers=[
+            {
+                'name': f"{APP_NAME}-webhook",
+                'service_uri': ENDPOINT,
+            }
+        ]
+    )
+
+    # Create Metric Alert
+    metric_alert = monitoring.MetricAlert(f"{SHORT_APP_NAME}-ma",
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        scopes=azure.servicebus.get_namespace(name=SB_NAMESPACE, resource_group_name=SERVICE_BUS_RESOURCE_GROUP).id,
+        actions=[
+            {
+                'action_group_id' : action_group.id 
+            }
+        ],
+        criterias=[
+            {
+                'aggregation' : 'Average',
+                'metricName' : 'DeadletteredMessages',
+                'metricNamespace' : 'Microsoft.ServiceBus/namespaces',
+                'operator' : 'GreaterThan',
+                'threshold' : 0,
+                'dimensions': [
+                    {
+                        'name' : 'EntityName',
+                        'operator' : 'Include',
+                        'values' : QUEUES
+                    }
+                ]
+            }
+        ]
+    )
 
 # Create Action Rule Action Group
 action_rule = monitoring.ActionRuleActionGroup(f"{SHORT_APP_NAME}-ar",

@@ -1,10 +1,23 @@
-from typing import Union
+from typing import Union, Dict
+
 
 class TriggeredAlert:
-    def __init__(self, alert):
+    def __init__(self, alert: Dict):
+        """Create an object to store the alert event
+        Args:
+            alert: a dict object containg the triggered event
+        Returns:
+            object
+        """
         self.alert = alert
 
     def get_deadletter_metric_value(self) -> Union[int, str]:
+        """obtain the metric value from the event.
+        Args:
+            None
+        Returns:
+            int of the metric value or if comes in as string will return string
+        """
         try:
             condition = self.alert['data']['alertContext']['condition']
             for x in condition['allOf']:
@@ -14,6 +27,12 @@ class TriggeredAlert:
             
     
     def get_service_bus_queue_name(self) -> str:
+        """obtain the service bus queue name from the event.
+        Args:
+            None
+        Returns:
+            name of the service bus queue in the alert
+        """
         #TODO: What if multiple Queues are alerted on
         try:
             condition = self.alert['data']['alertContext']['condition']
@@ -26,9 +45,21 @@ class TriggeredAlert:
             raise KeyError("value key to specify service bus queue not found in specified location")
     
     def get_service_bus_name(self):
+        """obtain the service bus name from the event.
+        Args:
+            None
+        Returns:
+            name of the service bus in the alert
+        """
         return self.alert['data']['essentials']['alertTargetIDs'][0]
 
     def get_fired_datetime(self):
+        """obtain the time the event fired from the event.
+        Args:
+            None
+        Returns:
+            firedDateTime in the alert
+        """
         return self.alert['data']['essentials']['firedDateTime']
 
 
