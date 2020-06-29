@@ -32,8 +32,10 @@ def __datadog_request(trx_id: str, from_datetime: str, to_datetime: str,
         to_datetime: format yyyy-mm-ddThh:mm:ssZ
         secrets: secrets obtained from get_secret()
     Returns:
-        response from /v1/logs-queries/list
-        None if an issue occours
+        inspect if dict contains 'statusCode' key, if it does
+        an issue had occoured. if a successful response from
+        /v1/logs-queries/list evaluate the 'logs' key
+        
     """
     session = requests.Session()
     session.headers = {
