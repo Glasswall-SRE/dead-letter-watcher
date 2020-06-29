@@ -16,6 +16,7 @@ def test_get_datetime_good_input():
         datetime_obj.minute == 58 and \
         datetime_obj.second == 24
 
+
 def test_get_datetime_good_input_no_microseconds():
     # Arrange
     parameter = "2020-06-26T14:58:24"
@@ -29,6 +30,7 @@ def test_get_datetime_good_input_no_microseconds():
         datetime_obj.minute == 58 and \
         datetime_obj.second == 24
 
+
 def test_get_datetime_bad_input():
     # Arrange
     parameter = "rubbish value"
@@ -37,6 +39,7 @@ def test_get_datetime_bad_input():
     with pytest.raises(ValueError):
         datetime_obj = deadletter_watcher.util.get_datetime(parameter)
 
+
 def test_set_datetime_good_input():
     # Arrange
     datetime_obj = datetime.datetime(year=2020,
@@ -44,11 +47,12 @@ def test_set_datetime_good_input():
                                      day=23,
                                      hour=15,
                                      minute=10,
-                                     second=0 )
+                                     second=0)
     # Act
     output = deadletter_watcher.util.set_datetime(datetime_obj)
     # Assert
     assert output == "2020-05-23T15:10:00Z"
+
 
 def test_set_datetime_bad_input():
     # Arrange
@@ -56,4 +60,3 @@ def test_set_datetime_bad_input():
     # Assert
     with pytest.raises(Exception):
         output = deadletter_watcher.util.set_datetime(None)
-    

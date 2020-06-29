@@ -5,16 +5,15 @@ def create_actions_slack_block():
         Actions Slack Block
     """
     return {
-        "type": "actions",
-        "elements": [
-            {
-                "type": "button",
-                "text": {
-                    "type": "plain_text",
-                    "emoji": True,
-                    "text": "Run"
-                },
-                "value": "Run"
-            }
-        ]
+        "type":
+        "actions",
+        "elements": [{
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "emoji": True,
+                "text": "Run"
+            },
+            "value": "Run"
+        }]
     }

@@ -18,7 +18,8 @@ def get_cluster(service_bus_name: str) -> str:
         name of the cluster
     """
     splitted = service_bus_name.split("-")
-    return splitted[len(splitted)-1]
+    return splitted[len(splitted) - 1]
+
 
 def obtain_deadletter_ids(queue: str, cluster: str, secrets: str) -> List[str]:
     """get all the deadletter ids from DLQ in cluster and queue specified
@@ -29,9 +30,11 @@ def obtain_deadletter_ids(queue: str, cluster: str, secrets: str) -> List[str]:
     Returns:
         a list of deadletters ID's from the `queue` in `cluster`
     """
-    service_bus_client = sb.connect(secrets['SERVICE_BUS_CONNECTION_STRINGS'][cluster])
+    service_bus_client = sb.connect(
+        secrets['SERVICE_BUS_CONNECTION_STRINGS'][cluster])
     deadletter_ids = sb.get_all_dead_letter_ids(queue, service_bus_client)
     return deadletter_ids
+
 
 def send_slack_notification(slack_block: List[Dict], secrets):
     """Makes a call to datadog logs query. To search for log containing
@@ -44,11 +47,11 @@ def send_slack_notification(slack_block: List[Dict], secrets):
     """
     slack_client = slack.WebClient(secrets['DL-WATCHER']['BOT_TOKEN'])
     response = slack_client.chat_postMessage(
-        channel=secrets['DL-WATCHER']['SLACK_CHANNEL'], 
-        text="deadletter", 
-        blocks=json.dumps(slack_block)
-    )
+        channel=secrets['DL-WATCHER']['SLACK_CHANNEL'],
+        text="deadletter",
+        blocks=json.dumps(slack_block))
     return response
+
 
 def lambda_handler(event, context):
     print(f"event:{event}, context:{context}")
@@ -67,14 +70,17 @@ def lambda_handler(event, context):
     triggered_time_obj = get_datetime(triggered_time)
 
     deadletter_ids = obtain_deadletter_ids(queue, cluster, secrets)
+    #TODO Remove
+    #deadletter_ids.append("e36008bf-be06-4eab-81fb-70d94dd9b597")
 
     deadletters = []
     for deadletter_id in deadletter_ids:
 
-        attributes = datadog_log_query(deadletter_id, triggered_time_obj, secrets)
+        attributes = datadog_log_query(deadletter_id, triggered_time_obj,
+                                       secrets)
 
         deadletter = {
-            'message_id':deadletter_id,
+            'message_id': deadletter_id,
             'tenant_name': attributes['tenant_name'],
             'sender': attributes['sender_email'],
             'recipient': attributes['recipient_email']
@@ -83,10 +89,9 @@ def lambda_handler(event, context):
 
     slack_block = create_slack_block(
         cluster=cluster,
-        service=queue, 
-        count=str(triggered_alert.get_deadletter_metric_value()), 
-        deadletters=deadletters
-    )
+        service=queue,
+        count=str(triggered_alert.get_deadletter_metric_value()),
+        deadletters=deadletters)
 
     response = send_slack_notification(slack_block, secrets)
 

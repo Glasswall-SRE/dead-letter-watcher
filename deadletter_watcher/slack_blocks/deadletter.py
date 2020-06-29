@@ -1,8 +1,9 @@
 from typing import Dict
 from deadletter_watcher.slack_blocks.options import create_options_slack_block
 
-def create_deadletter_slack_block(trx_id: str, tenant: str,
-                                  sender: str, receiver: str) -> Dict:
+
+def create_deadletter_slack_block(trx_id: str, tenant: str, sender: str,
+                                  receiver: str) -> Dict:
     """Create a Slack Block containing deadletter details
     Args:
         trx_id: message id from the deadlettered message
@@ -15,8 +16,10 @@ def create_deadletter_slack_block(trx_id: str, tenant: str,
     return {
         "type": "section",
         "text": {
-            "type": "mrkdwn",
-            "text": f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant Name: {tenant}\nSender:{sender}\nReceiver:{receiver}"
+            "type":
+            "mrkdwn",
+            "text":
+            f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant Name: {tenant}\nSender: {sender}\nReceiver: {receiver}"
         },
         "accessory": {
             "type": "static_select",

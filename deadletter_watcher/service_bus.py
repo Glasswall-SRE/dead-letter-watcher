@@ -41,5 +41,3 @@ def connect(connection_str: str) -> ServiceBusClient:
         a ServiceBusClient object
     """
     return ServiceBusClient.from_connection_string(connection_str)
-
-

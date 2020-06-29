@@ -1,6 +1,7 @@
 import pytest
 import deadletter_watcher.slack_blocks.actions as actions
 
+
 def test_create_actions_slack_block():
     # Arrange
     # Act
