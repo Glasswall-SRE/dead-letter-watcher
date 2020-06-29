@@ -40,16 +40,11 @@ for cluster in clusters:
             'action_group_id': action_group.id
         }],
         criterias=[{
-            'aggregation':
-            'Average',
-            'metricName':
-            'DeadletteredMessages',
-            'metricNamespace':
-            'Microsoft.ServiceBus/namespaces',
-            'operator':
-            'GreaterThan',
-            'threshold':
-            0,
+            'aggregation': 'Average',
+            'metricName': 'DeadletteredMessages',
+            'metricNamespace': 'Microsoft.ServiceBus/namespaces',
+            'operator': 'GreaterThan',
+            'threshold': 0,
             'dimensions': [{
                 'name': 'EntityName',
                 'operator': 'Include',
@@ -57,25 +52,25 @@ for cluster in clusters:
             }]
         }])
 
-# Create Action Rule Action Group
-action_rule = monitoring.ActionRuleActionGroup(
-    f"{SHORT_APP_NAME}-ar",
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    description="trigger for deadletter appearing in service bus queue",
-    action_group_id=action_group.id,
-    scope={
-        'type':
-        'ResourceGroup',
-        'resourceIds':
-        [core.get_resource_group(name=SERVICE_BUS_RESOURCE_GROUP).id]
-    },
-    condition={
-        'monitorService': {
-            'operator': 'Equals',
-            'values': ['Platform']
+    # Create Action Rule Action Group
+    action_rule = monitoring.ActionRuleActionGroup(
+        f"{SHORT_APP_NAME}-ar",
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        description="trigger for deadletter appearing in service bus queue",
+        action_group_id=action_group.id,
+        scope={
+            'type':
+            'ResourceGroup',
+            'resourceIds':
+            [core.get_resource_group(name=SERVICE_BUS_RESOURCE_GROUP).id]
         },
-        'alertRuleId': {
-            'operator': 'Equals',
-            'values': [metric_alert.id]
-        }
-    })
+        condition={
+            'monitorService': {
+                'operator': 'Equals',
+                'values': ['Platform']
+            },
+            'alertRuleId': {
+                'operator': 'Equals',
+                'values': [metric_alert.id]
+            }
+        })

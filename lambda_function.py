@@ -70,9 +70,7 @@ def lambda_handler(event, context):
     triggered_time_obj = get_datetime(triggered_time)
 
     deadletter_ids = obtain_deadletter_ids(queue, cluster, secrets)
-    #TODO Remove
-    #deadletter_ids.append("e36008bf-be06-4eab-81fb-70d94dd9b597")
-
+    
     deadletters = []
     for deadletter_id in deadletter_ids:
 
