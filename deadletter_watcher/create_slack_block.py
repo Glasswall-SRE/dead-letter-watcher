@@ -3,8 +3,9 @@ from deadletter_watcher.slack_blocks.deadletter import create_deadletter_slack_b
 from deadletter_watcher.slack_blocks.actions import create_actions_slack_block
 from deadletter_watcher.slack_blocks.welcome import create_welcome_slack_block
 
-def create_slack_block(cluster: str, service: str,
-                       count: int, deadletters: List[Dict]) -> List[Dict]:
+
+def create_slack_block(cluster: str, service: str, count: int,
+                       deadletters: List[Dict]) -> List[Dict]:
     """Create a Slack Block from deadletter information
     Args:
         cluster: affected cluster
@@ -24,11 +25,8 @@ def create_slack_block(cluster: str, service: str,
 
     for deadletter in deadletters:
         deadletter_slack_block = create_deadletter_slack_block(
-            deadletter['message_id'],
-            deadletter['tenant_name'],
-            deadletter['sender'],
-            deadletter['recipient']
-        )
+            deadletter['message_id'], deadletter['tenant_name'],
+            deadletter['sender'], deadletter['recipient'])
         block.append(deadletter_slack_block)
 
         block.append({"type": "divider"})

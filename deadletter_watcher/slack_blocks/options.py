@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+
 def create_options_slack_block(options: List[str]) -> List[Dict]:
     """Create a Slack Block which will contain a list of potential options
     a deadletter may have.
@@ -8,6 +9,9 @@ def create_options_slack_block(options: List[str]) -> List[Dict]:
     Returns:
         Options Slack Block
     """
+    if len(options) == 0:
+        raise ValueError("Input Value cannot be an empty list")
+
     options_slack_blocks = []
     for option in options:
         slack_block = {

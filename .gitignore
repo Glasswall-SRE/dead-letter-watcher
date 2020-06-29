@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 secrets.json
+.serverless
+.vscode
+reference.txt

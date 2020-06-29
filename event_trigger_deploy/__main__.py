@@ -5,71 +5,72 @@ from pulumi_azure import core
 
 secrets = get_secret()
 
-APP_NAME="dead-letter-watcher"
-SHORT_APP_NAME="dl-wtchr"
+APP_NAME = "dead-letter-watcher"
+SHORT_APP_NAME = "dl-wtchr"
 
-ENDPOINT=secrets["PULUMI"]["DEADLETTER_WATCHER_ENDPOINT"]
-SERVICE_BUS_RESOURCE_GROUP=secrets["PULUMI"]["SERVICE_BUS_RESOURCE_GROUP"]
-SB_NAMESPACE=secrets["PULUMI"]["SERVICE_BUS_NAMESPACE"]
-QUEUES=secrets["PULUMI"]["SERVICE_BUS_QUEUES"]
+ENDPOINT = secrets["PULUMI"]["DEADLETTER_WATCHER_ENDPOINT"]
+QUEUES = secrets["PULUMI"]["SERVICE_BUS_QUEUES"]
 
-#  Create Action Group
-action_group = monitoring.ActionGroup(f"{SHORT_APP_NAME}-ag",
-    short_name=SHORT_APP_NAME,
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    webhook_receivers=[
-        {
+clusters = ["dev"]
+
+for cluster in clusters:
+    SERVICE_BUS_RESOURCE_GROUP = secrets["PULUMI"]["clusters"][cluster][
+        "SERVICE_BUS_RESOURCE_GROUP"]
+    SB_NAMESPACE = secrets["PULUMI"]["clusters"][cluster][
+        "SERVICE_BUS_NAMESPACE"]
+
+    #  Create Action Group
+    action_group = monitoring.ActionGroup(
+        f"{SHORT_APP_NAME}-ag",
+        short_name=SHORT_APP_NAME,
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        webhook_receivers=[{
             'name': f"{APP_NAME}-webhook",
             'service_uri': ENDPOINT,
-        }
-    ]
-)
+        }])
 
-# Create Metric Alert
-metric_alert = monitoring.MetricAlert(f"{SHORT_APP_NAME}-ma",
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    scopes=azure.servicebus.get_namespace(name=SB_NAMESPACE, resource_group_name=SERVICE_BUS_RESOURCE_GROUP).id,
-    actions=[
-        {
-            'action_group_id' : action_group.id 
-        }
-    ],
-    criterias=[
-        {
-            'aggregation' : 'Average',
-            'metricName' : 'DeadletteredMessages',
-            'metricNamespace' : 'Microsoft.ServiceBus/namespaces',
-            'operator' : 'GreaterThan',
-            'threshold' : 0,
-            'dimensions': [
-                {
-                    'name' : 'EntityName',
-                    'operator' : 'Include',
-                    'values' : QUEUES
-                }
-            ]
-        }
-    ]
-)
+    # Create Metric Alert
+    metric_alert = monitoring.MetricAlert(
+        f"{SHORT_APP_NAME}-ma",
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        scopes=azure.servicebus.get_namespace(
+            name=SB_NAMESPACE,
+            resource_group_name=SERVICE_BUS_RESOURCE_GROUP).id,
+        actions=[{
+            'action_group_id': action_group.id
+        }],
+        criterias=[{
+            'aggregation': 'Average',
+            'metricName': 'DeadletteredMessages',
+            'metricNamespace': 'Microsoft.ServiceBus/namespaces',
+            'operator': 'GreaterThan',
+            'threshold': 0,
+            'dimensions': [{
+                'name': 'EntityName',
+                'operator': 'Include',
+                'values': QUEUES
+            }]
+        }])
 
-# Create Action Rule Action Group
-action_rule = monitoring.ActionRuleActionGroup(f"{SHORT_APP_NAME}-ar",
-    resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
-    description="trigger for deadletter appearing in service bus queue",
-    action_group_id=action_group.id,
-    scope={
-        'type': 'ResourceGroup',
-        'resourceIds' : [core.get_resource_group(name=SERVICE_BUS_RESOURCE_GROUP).id]
-    },
-    condition={
-        'monitorService' : {
-            'operator' : 'Equals',
-            'values' : ['Platform']
+    # Create Action Rule Action Group
+    action_rule = monitoring.ActionRuleActionGroup(
+        f"{SHORT_APP_NAME}-ar",
+        resource_group_name=SERVICE_BUS_RESOURCE_GROUP,
+        description="trigger for deadletter appearing in service bus queue",
+        action_group_id=action_group.id,
+        scope={
+            'type':
+            'ResourceGroup',
+            'resourceIds':
+            [core.get_resource_group(name=SERVICE_BUS_RESOURCE_GROUP).id]
         },
-        'alertRuleId' : {
-            'operator' : 'Equals',
-            'values' : [ metric_alert.id ]
-        }
-
-    }
-)
+        condition={
+            'monitorService': {
+                'operator': 'Equals',
+                'values': ['Platform']
+            },
+            'alertRuleId': {
+                'operator': 'Equals',
+                'values': [metric_alert.id]
+            }
+        })
