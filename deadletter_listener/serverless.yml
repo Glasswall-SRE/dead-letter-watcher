@@ -8,11 +8,8 @@ provider:
 
 package:
   exclude:
-    - .github/**
-    - event_trigger_deploy/**
-    - LICENSE
-    - README.md
-    - requirements.md
+    - tests/**
+    - __pycache__/**
 
 functions:
   hello:

@@ -3,7 +3,6 @@ import slack
 from typing import List, Dict
 from deadletter_watcher.create_slack_block import create_slack_block
 from deadletter_watcher.secrets import get_secret
-from deadletter_watcher.sample_az_alert import alert
 from deadletter_watcher.triggered_alert import TriggeredAlert
 import deadletter_watcher.service_bus as sb
 from deadletter_watcher.datadog import datadog_log_query
@@ -56,9 +55,9 @@ def send_slack_notification(slack_block: List[Dict], secrets):
 def lambda_handler(event, context):
     print(f"event:{event}, context:{context}")
 
-    #TODO: Unsure until I get actual event. Currently working with event microsoft documented
-    az_event = alert
-    triggered_alert = TriggeredAlert(az_event)
+    event = json.loads( event.get("body") )
+
+    triggered_alert = TriggeredAlert(event)
 
     secrets = json.loads(get_secret())
 
@@ -70,7 +69,7 @@ def lambda_handler(event, context):
     triggered_time_obj = get_datetime(triggered_time)
 
     deadletter_ids = obtain_deadletter_ids(queue, cluster, secrets)
-    
+
     deadletters = []
     for deadletter_id in deadletter_ids:
 

@@ -1,0 +1,15 @@
+service: deadletter-resolver
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: eu-west-2
+
+functions:
+  dl-resolver:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: resolve
+          method: post
