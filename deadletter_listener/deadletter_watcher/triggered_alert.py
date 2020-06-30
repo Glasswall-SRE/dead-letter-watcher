@@ -17,7 +17,7 @@ class TriggeredAlert:
             int of the metric value or if comes in as string will return string
         """
         try:
-            condition = self.alert['data']['alertContext']['condition']
+            condition = self.alert['data']['context']['condition']
             for x in condition['allOf']:
                 return x['metricValue']
         except KeyError:
@@ -33,7 +33,7 @@ class TriggeredAlert:
         """
         #TODO: What if multiple Queues are alerted on
         try:
-            condition = self.alert['data']['alertContext']['condition']
+            condition = self.alert['data']['context']['condition']
             for x in condition['allOf']:
                 if x['metricName'] == "DeadletteredMessages":
                     for dimension in x['dimensions']:
@@ -49,7 +49,8 @@ class TriggeredAlert:
         Returns:
             name of the service bus in the alert
         """
-        return self.alert['data']['essentials']['alertTargetIDs'][0]
+        
+        return self.alert['data']['context']['resourceName']
 
     def get_fired_datetime(self) -> str:
         """obtain the time the event fired from the event.
@@ -57,4 +58,4 @@ class TriggeredAlert:
         Returns:
             firedDateTime in the alert
         """
-        return self.alert['data']['essentials']['firedDateTime']
+        return self.alert['data']['context']['timestamp']

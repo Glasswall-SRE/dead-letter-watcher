@@ -19,9 +19,8 @@ def get_datetime(event_utc_time: str) -> datetime.datetime:
 
         return datetime.datetime.fromisoformat(event_utc_time)
     except:
-        raise ValueError(
-            "Invalid event_utc_time, unable to create datetime object")
-
+        # Could not parse get now time instead
+        return datetime.datetime.now()
 
 def set_datetime(datetime_obj: datetime.datetime) -> str:
     """Create an iso standard datetime string, for query usage e.g. datadog.py
