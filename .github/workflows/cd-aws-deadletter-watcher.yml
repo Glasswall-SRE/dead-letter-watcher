@@ -3,6 +3,7 @@ name: CD Deadletter Watcher
 on:
   push:
     paths: 
+      - '.github/workflows/cd-aws-deadletter-watcher.yml'
       - 'deadletter_listener/**'
     branches: [master]
 
@@ -25,6 +26,9 @@ jobs:
         python -m pip install --upgrade pip pipenv
         pipenv sync --dev
         
+    - name: changedir
+      run: cd ./deadletter_listender/
+
     - name: Serverless install python-requirements plugin
       uses: serverless/github-action@master
       with:
