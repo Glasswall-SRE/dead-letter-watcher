@@ -36,8 +36,12 @@ jobs:
     - name: Serverless install python-requirements plugin
       run: |
         cd ./deadletter_listener/
-        pwd
-        serverless plugin install --name serverless-python-requirements     
+        serverless plugin install --name serverless-python-requirements
+
+    - name: Serverless install iam-roles-per-function plugin
+      run: |
+        cd ./deadletter_listener/
+        npm install --save-dev serverless-iam-roles-per-function
     
     - name: Serverless Deploy to AWS
       run: |
