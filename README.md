@@ -1,6 +1,8 @@
 # dead-letter-watcher
 A series of Azure Functions that wait for events to handle dead-letters
 
+![CD Deadletter Watcher](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Deadletter%20Watcher/badge.svg)
+
 ## Architecture
 The archictecture comprises of 3 services:
 - [event_trigger](#event-trigger-service)
