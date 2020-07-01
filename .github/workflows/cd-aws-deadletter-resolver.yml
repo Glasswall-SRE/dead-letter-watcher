@@ -36,6 +36,7 @@ jobs:
       run: |
         cd ./deadletter_resolver/
         serverless plugin install --name serverless-python-requirements
+        
     - name: Serverless install iam-roles-per-function plugin
       run: |
         cd ./deadletter_resolver/
@@ -43,7 +44,7 @@ jobs:
     
     - name: Serverless Deploy to AWS
       run: |
-        cd ./deadletter_listener/
+        cd ./deadletter_resolver/
         serverless deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}
