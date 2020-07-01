@@ -63,6 +63,7 @@ def lambda_handler(event, context):
     service_bus_name = triggered_alert.get_service_bus_name()
     queue = triggered_alert.get_service_bus_queue_name()
     cluster = get_cluster(service_bus_name)
+    
     triggered_time = triggered_alert.get_fired_datetime()
     triggered_time_obj = get_datetime(triggered_time)
 
