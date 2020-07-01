@@ -29,15 +29,14 @@ jobs:
         cd ./deadletter_listener/
         python -m pip install --upgrade pip pipenv
         pipenv sync --dev
-        
-    - name: changedir
-      run: cd ./deadletter_listener/
 
     - name: Install Serverless
       run: npm install -g serverless
         
     - name: Serverless install python-requirements plugin
-      run: serverless plugin install --name serverless-python-requirements     
+      run: |
+        cd ./deadletter_listener/
+        serverless plugin install --name serverless-python-requirements     
     
     - name: Serverless Deploy to AWS
       uses: jackdcasey/github-action@python3.8-nodejs13
