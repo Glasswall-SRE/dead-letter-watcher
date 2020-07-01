@@ -56,7 +56,6 @@ def lambda_handler(event, context):
     print(f"event:{event}, context:{context}")
     event = json.loads( event.get("body") )
     triggered_alert = TriggeredAlert(event)
-
     secrets = json.loads(get_secret())
 
     # Gather required details for processing
