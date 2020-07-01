@@ -28,7 +28,7 @@ jobs:
     - name: Serverless install python-requirements plugin
       uses: serverless/github-action@master
       with:
-        args: plugin install --name serverless-python-requirements    
+        args: cd ./deadletter_listener/ plugin install --name serverless-python-requirements    
     
     - name: Serverless Deploy to AWS
       uses: jackdcasey/github-action@python3.8-nodejs13
