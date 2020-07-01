@@ -2,6 +2,7 @@ from typing import Dict, List
 from deadletter_watcher.slack_blocks.deadletter import create_deadletter_slack_block
 from deadletter_watcher.slack_blocks.actions import create_actions_slack_block
 from deadletter_watcher.slack_blocks.welcome import create_welcome_slack_block
+from deadletter_watcher.slack_blocks.options import create_options_slack_block
 
 
 def create_slack_block(cluster: str, service: str, count: int,
@@ -29,8 +30,14 @@ def create_slack_block(cluster: str, service: str, count: int,
             deadletter['sender'], deadletter['recipient'])
         block.append(deadletter_slack_block)
 
+        actions={
+            "type": "actions",
+            "elements": create_options_slack_block(deadletter['message_id'], ["replay", "reconstruct"])
+        }
+        block.append(actions)
+
         block.append({"type": "divider"})
 
-    block.append(create_actions_slack_block())
+    #block.append(create_actions_slack_block())
 
     return block
