@@ -1,0 +1,50 @@
+name: CD Deadletter Watcher
+
+on:
+  push:
+    paths: 
+      - '.github/workflows/cd-aws-deadletter-resolver.yml'
+      - 'deadletter_resolver/**'
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+        
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+
+    - name: Install dependencies using pipenv
+      run: |
+        cd ./deadletter_resolver/
+        python -m pip install --upgrade pip pipenv
+        pipenv sync --dev
+    - name: Install Serverless
+      run: npm install -g serverless
+        
+    - name: Serverless install python-requirements plugin
+      run: |
+        cd ./deadletter_resolver/
+        serverless plugin install --name serverless-python-requirements
+    - name: Serverless install iam-roles-per-function plugin
+      run: |
+        cd ./deadletter_resolver/
+        npm install --save-dev serverless-iam-roles-per-function
+    
+    - name: Serverless Deploy to AWS
+      run: |
+        cd ./deadletter_listener/
+        serverless deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}
