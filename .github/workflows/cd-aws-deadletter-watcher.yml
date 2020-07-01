@@ -2,6 +2,8 @@ name: CD Deadletter Watcher
 
 on:
   push:
+    paths: 
+      - 'deadletter_listener/**'
     branches: [master]
 
 jobs:
