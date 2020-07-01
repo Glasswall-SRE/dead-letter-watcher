@@ -19,15 +19,9 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Goto deadletter_listener directory
-      run: |
-        pwd
-        cd ./deadletter_listener/
-        pwd
-
     - name: Install dependencies using pipenv
       run: |
-        pwd
+        cd ./deadletter_listener/
         python -m pip install --upgrade pip pipenv
         pipenv sync --dev
         
