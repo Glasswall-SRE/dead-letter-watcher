@@ -1,14 +1,22 @@
+<div align="center">
+
 # dead-letter-watcher
 A series of Azure Functions that wait for events to handle dead-letters
 
 ![CD Deadletter Watcher](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Deadletter%20Watcher/badge.svg)
 ![CD Azure Event Trigger](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Azure%20Event%20Trigger/badge.svg)
 
+</div>
+
+## Motivation
+The frequency with which deadletter messages cause call outs required a method of reducing time spent during these incidents and provide a automated solution to gather nessessary information and action the deadletters.
+This repository provides the solution to allow an interactive way through Slack to action deadletters even from the comfort of a mobile device. 
+
 ## Architecture
 The archictecture comprises of 3 services:
-- [event_trigger](#event-trigger-service)
-- [deadletter_watcher](#deadletter-watcher-service)
-- [deadletter_resolver]()
+- [Event Trigger Service](#event-trigger-service)
+- [Deadletter Watcher Service](#deadletter-watcher-service)
+- [Deadletter Resolver Service](#deadletter-resolver-service)
 
 ![](architecture.png)
 
@@ -27,6 +35,19 @@ This service will install all nessessary pip modules, deploy infrustructure to A
 This service will
 - interact with every action taking place on the UI sent to Slack from the Deadletter Watcher Service.
 - contact V.I.C.T.O.R.I.A in order to run the action user triggered for the specific deadletter.
+
+## Tech Stack
+- Python 3.8
+  - Slack API
+  - DataDog API
+  - AWS SDK
+- Infrustructure
+  - AWS
+  - Azure
+- CI/CD
+  - GitHub Actions
+  - Serverless
+  - Pulumi
 
 # Secrets
 ```
