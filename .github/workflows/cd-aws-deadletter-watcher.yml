@@ -20,7 +20,10 @@ jobs:
         python-version: '3.8'
 
     - name: Goto deadletter_listener directory
-      run: cd deadletter_listener/
+      run: |
+        pwd
+        cd ./deadletter_listener/
+        pwd
 
     - name: Install dependencies using pipenv
       run: |
