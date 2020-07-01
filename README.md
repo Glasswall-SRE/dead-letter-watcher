@@ -1,6 +1,21 @@
 # dead-letter-watcher
 A series of Azure Functions that wait for events to handle dead-letters
 
+## Architecture
+The archictecture comprises of 3 services:
+- [event_trigger](#event-trigger-service)
+- deadletter_watcher
+- deadletter_resolver
+
+![](architecture.png)
+
+### Event Trigger Service
+This service deploys the nessassary components in order to:
+- create the alerts for when the deadlettered messages threshold surpases 0
+- contact the webook for deadletter-watcher service
+
+### Deadletter Watcher Service
+
 # Secrets
 ```
 {
