@@ -1,6 +1,7 @@
 import json
 import json
 from urllib.parse import parse_qs
+from typing import Tuple
 
 def get_user_id(payload) -> str:
     return payload['user']['id']
@@ -16,10 +17,17 @@ def get_slack_block(block_id, payload):
         if block_id == block['block_id']:
             return block
 
-def is_run_clicked(payload) -> bool:
-    if "value-run" == payload['actions'][0]['value']:
-        return True
-    return False
+def get_selected_option_value(payload) -> Tuple[str,str]:
+    selected_option_value = payload['actions'][0]['value']
+    items = selected_option_value.split("-")
+    if items[0] == "value":
+        if items[2] == "replay" or items[2] == "reconstruct":
+            return items[1], items[2]
+        else:
+            print("Illegal value in action location")
+
+def contact_victoria():
+    pass
 
 def lambda_handler(event, context):
     print(f"event:{event}, context:{context}")
@@ -31,16 +39,7 @@ def lambda_handler(event, context):
     block_id = get_actioned_block_id(payload)
     block = get_slack_block(block_id, payload)
 
-    if is_run_clicked(payload):
-        print("Run Clicked")
-
-
-    action_id = payload['actions'][0]['action_id']
-    action_block_id = payload['actions'][0]['block_id']
-    selected_option_value = payload['actions'][0]['selected_option']['value']
-    selected_option_text = payload['actions'][0]['selected_option']['text']['text']
-
-
+    trx_id, action = get_selected_option_value(payload)
 
 
     body = {
