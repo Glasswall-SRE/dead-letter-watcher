@@ -36,11 +36,13 @@ jobs:
     - name: Serverless install python-requirements plugin
       run: |
         cd ./deadletter_listener/
+        pwd
         serverless plugin install --name serverless-python-requirements     
     
     - name: Serverless Deploy to AWS
       run: |
         cd ./deadletter_listener/
+        pwd
         serverless deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}
