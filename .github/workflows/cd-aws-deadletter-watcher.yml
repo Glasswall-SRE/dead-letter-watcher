@@ -27,7 +27,7 @@ jobs:
         pipenv sync --dev
         
     - name: changedir
-      run: cd ./deadletter_listender/
+      run: cd ./deadletter_listener/
 
     - name: Serverless install python-requirements plugin
       uses: serverless/github-action@master
