@@ -49,7 +49,14 @@ This service will
   - Serverless
   - Pulumi
 
-# Secrets
+## FAQ
+
+### How to Setup Deadletter Watcher in a different Slack Channel
+- To setup Deadletter Watcher in another slack channel, insert the target channel id in the [Secrets Manager](#secrets) field of `SLACK_CHANNEL`
+### How to add Queues or Clusters to Deadletter Watcher
+- When a new queue or cluster is added that should be scrutenised by the Event Trigger Service, place the queue or cluster in the [Secrets Manager](#secrets) and redeploy the Event Trigger Service.
+
+## Secrets
 ```
 {
     "PULUMI": {
