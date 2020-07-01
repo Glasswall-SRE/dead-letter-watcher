@@ -1,1 +1,15 @@
-# Pulumi Up
+name: CD Azure Event Trigger
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+
+      # Pulumi Up
