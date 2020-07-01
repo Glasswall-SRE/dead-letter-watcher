@@ -61,6 +61,7 @@ def lambda_handler(event, context):
 
     secrets = json.loads(get_secret())
 
+    # Gather required details for processing
     service_bus_name = triggered_alert.get_service_bus_name()
     queue = triggered_alert.get_service_bus_queue_name()
     cluster = get_cluster(service_bus_name)
