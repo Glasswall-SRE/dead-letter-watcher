@@ -2,6 +2,8 @@ name: CD Azure Event Trigger
 
 on:
   push:
+    paths:
+    - 'event_trigger_deploy/**'
     branches: [master]
 
 jobs:
