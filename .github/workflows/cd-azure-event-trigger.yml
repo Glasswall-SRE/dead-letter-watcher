@@ -21,8 +21,8 @@ jobs:
       with:
         args: up --yes
       env:
-        PULUMI_ROOT: event_trigger
-        PULUMI_CI: pr
+        PULUMI_ROOT: './event_trigger'
+        PULUMI_CI: ci
         ARM_CLIENT_ID: ${{ secrets.PULUMI_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}
         ARM_TENANT_ID: ${{ secrets.PULUMI_AZURE_TENANT_ID }}
