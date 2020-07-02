@@ -27,3 +27,10 @@ jobs:
         echo "Done CURL"
         python -m pip install --upgrade pip pipenv
         pipenv sync 
+        
+    - name: Log into Pulumi Backend
+      run: |
+        export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export AZURE_STORAGE_ACCOUNT="stpulumi"
+        echo AZURE_STORAGE_KEY
+        pulumi login --cloud-url azblob://pulumi
