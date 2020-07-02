@@ -4,7 +4,7 @@ on:
   push:
     paths:
     - '.github/workflows/cd-azure-event-trigger.yml'
-    - 'infra/**'
+    - 'event_trigger/**'
     branches: [master]
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
       with:
         args: up --yes
       env:
-        PULUMI_ROOT: infra
+        PULUMI_ROOT: event_trigger
         PULUMI_CI: up
         ARM_CLIENT_ID: ${{ secrets.PULUMI_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}
