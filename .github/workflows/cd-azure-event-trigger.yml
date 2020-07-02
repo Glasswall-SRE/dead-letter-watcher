@@ -14,12 +14,15 @@ jobs:
     steps:
     - name: Checkout 🛎️
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
 
     - uses: docker://pulumi/actions
       with:
         args: up --yes
       env:
         PULUMI_ROOT: infra
+        PULUMI_CI: up
         ARM_CLIENT_ID: ${{ secrets.PULUMI_AZURE_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}
         ARM_TENANT_ID: ${{ secrets.PULUMI_AZURE_TENANT_ID }}
