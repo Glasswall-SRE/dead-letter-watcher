@@ -3,6 +3,7 @@ name: CD Azure Event Trigger
 on:
   push:
     paths:
+    - '.github/workflows/cd-azure-event-trigger.yml'
     - 'event_trigger_deploy/**'
     branches: [master]
 
@@ -14,4 +15,13 @@ jobs:
     - name: Checkout 🛎️
       uses: actions/checkout@v2
 
-      # Pulumi Up
+    - uses: docker://pulumi/actions
+      with:
+        args: up --yes
+      env:
+        ARM_CLIENT_ID: ${{ secrets.PULUMI_AZURE_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}
+        ARM_TENANT_ID: ${{ secrets.PULUMI_AZURE_TENANT_ID }}
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+        PULUMI_ROOT: event_trigger_deploy
+
