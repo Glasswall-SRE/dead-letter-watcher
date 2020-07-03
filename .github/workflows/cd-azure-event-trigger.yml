@@ -26,18 +26,8 @@ jobs:
         curl -fsSL https://get.pulumi.com | sh -s -- --version 2.4.0
         echo "Done CURL"
         echo "::add-path::/home/runner/.pulumi/bin"
-#        export PATH='/home/runner/.pulumi/bin':$PATH
-#        echo PATH=$PATH
-      
-
 #        python -m pip install --upgrade pip pipenv
 #        pipenv sync 
-
-    - name: Pulumi Version
-      run: |
-        pulumi version
-
-
         
     - uses: azure/login@v1.1
       with:
@@ -47,15 +37,20 @@ jobs:
       run: |
         export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
         export AZURE_STORAGE_ACCOUNT="stpulumi"
-        export PATH='/home/runner/.pulumi/bin':$PATH
         pulumi login --cloud-url azblob://pulumi
         
-#    - name: Populate Env Vars with Azure Credentials
-#      env:
-#        ARM_SUBSCRIPTION_ID: `az account show --query 'id' --output tsv`
-#        AZURE_CLIENT_ID: $servicePrincipalId
-#        AZURE_CLIENT_SECRET: $servicePrincipalKey
-#        AZURE_TENANT_ID: $tenantId
-#        ARM_CLIENT_ID: $servicePrincipalId
-#        ARM_CLIENT_SECRET: $servicePrincipalKey
-#        ARM_TENANT_ID: $tenantId
+    - name: Populate Env Vars with Azure Credentials
+      run: |
+        echo "::set-env name=ARM_SUBSCRIPTION_ID::${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}"
+        echo "::set-env name=AZURE_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
+        echo "::set-env name=AZURE_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
+        echo "::set-env name=AZURE_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
+#        echo "::set-env name=ARM_CLIENT_ID::${{ secrets. }}"
+#        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets. }}"
+#        echo "::set-env name=ARM_TENANT_ID::${{ secrets. }}"
+        
+    - name: Install Pulumi Azure Plugins
+      run: |
+        pulumi plugin install resource azure v2.2.1
+        pulumi plugin install resource azuread v3.6.1
+
