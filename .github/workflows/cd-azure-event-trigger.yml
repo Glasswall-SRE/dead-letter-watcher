@@ -32,6 +32,7 @@ jobs:
         
     - name: Pulumi Version
       run: |
+        export PATH='/home/runner/.pulumi/bin':$PATH
         echo PATH=$PATH
         pulumi version
 
@@ -46,4 +47,5 @@ jobs:
         export AZURE_STORAGE_ACCOUNT="stpulumi"
         echo AZ_STORAGE_KEY=$AZURE_STORAGE_KEY
         echo AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT
+        export PATH='/home/runner/.pulumi/bin':$PATH
         pulumi login --cloud-url azblob://pulumi
