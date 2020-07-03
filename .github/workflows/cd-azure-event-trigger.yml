@@ -28,6 +28,10 @@ jobs:
         python -m pip install --upgrade pip pipenv
         pipenv sync 
         
+    - name: Pulumi Version
+      run: pulumi version
+
+        
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.DL_AZURE_CREDS }}
