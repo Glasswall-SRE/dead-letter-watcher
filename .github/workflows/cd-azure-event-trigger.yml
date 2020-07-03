@@ -28,6 +28,11 @@ jobs:
         python -m pip install --upgrade pip pipenv
         pipenv sync 
         
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.DL_AZURE_CREDS }}
+        
+        
     - name: Log into Pulumi Backend
       run: |
         export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
