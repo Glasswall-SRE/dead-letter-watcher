@@ -31,7 +31,9 @@ jobs:
 #        pipenv sync 
         
     - name: Pulumi Version
-      run: pulumi version
+      run: |
+        echo PATH=$PATH
+        pulumi version
 
         
     - uses: azure/login@v1.1
