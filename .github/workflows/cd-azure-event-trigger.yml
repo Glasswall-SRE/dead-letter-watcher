@@ -25,16 +25,18 @@ jobs:
         cd ./event_trigger/
         curl -fsSL https://get.pulumi.com | sh -s -- --version 2.4.0
         echo "Done CURL"
-        export PATH='/home/runner/.pulumi/bin':$PATH
-        echo PATH=$PATH
+        set-env name=PATH::/home/runner/.pulumi/bin
+#        export PATH='/home/runner/.pulumi/bin':$PATH
+#        echo PATH=$PATH
+      
+
 #        python -m pip install --upgrade pip pipenv
 #        pipenv sync 
-        
+
     - name: Pulumi Version
       run: |
-        export PATH='/home/runner/.pulumi/bin':$PATH
-        echo PATH=$PATH
         pulumi version
+
 
         
     - uses: azure/login@v1.1
@@ -45,7 +47,15 @@ jobs:
       run: |
         export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
         export AZURE_STORAGE_ACCOUNT="stpulumi"
-        echo AZ_STORAGE_KEY=$AZURE_STORAGE_KEY
-        echo AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT
         export PATH='/home/runner/.pulumi/bin':$PATH
         pulumi login --cloud-url azblob://pulumi
+        
+    - name: Populate Env Vars with Azure Credentials
+      env:
+        ARM_SUBSCRIPTION_ID: `az account show --query 'id' --output tsv`
+        AZURE_CLIENT_ID: $servicePrincipalId
+        AZURE_CLIENT_SECRET: $servicePrincipalKey
+        AZURE_TENANT_ID: $tenantId
+        ARM_CLIENT_ID: $servicePrincipalId
+        ARM_CLIENT_SECRET: $servicePrincipalKey
+        ARM_TENANT_ID: $tenantId
