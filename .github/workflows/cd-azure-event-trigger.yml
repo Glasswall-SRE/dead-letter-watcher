@@ -25,7 +25,7 @@ jobs:
         cd ./event_trigger/
         curl -fsSL https://get.pulumi.com | sh -s -- --version 2.4.0
         echo "Done CURL"
-        set-env name=PATH::/home/runner/.pulumi/bin
+        echo "::add-path::/home/runner/.pulumi/bin"
 #        export PATH='/home/runner/.pulumi/bin':$PATH
 #        echo PATH=$PATH
       
