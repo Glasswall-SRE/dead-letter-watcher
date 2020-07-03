@@ -25,8 +25,8 @@ jobs:
         cd ./event_trigger/
         curl -fsSL https://get.pulumi.com | sh -s -- --version 2.4.0
         echo "Done CURL"
-        python -m pip install --upgrade pip pipenv
-        pipenv sync 
+#        python -m pip install --upgrade pip pipenv
+#        pipenv sync 
         
     - name: Pulumi Version
       run: pulumi version
