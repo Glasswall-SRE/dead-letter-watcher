@@ -36,5 +36,6 @@ jobs:
       run: |
         export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
         export AZURE_STORAGE_ACCOUNT="stpulumi"
-        echo $AZURE_STORAGE_KEY
+        echo AZ_STORAGE_KEY=$AZURE_STORAGE_KEY
+        echo AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT
         pulumi login --cloud-url azblob://pulumi
