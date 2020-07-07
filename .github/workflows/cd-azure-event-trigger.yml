@@ -40,9 +40,9 @@ jobs:
     - name: Log into Pulumi Backend
       run: |
         export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
-        echo "::set-env name=AZURE_STORAGE_KEY::TMP_AZURE_STORAGE_KEY"
+        echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
         export TMP_AZURE_STORAGE_ACCOUNT="stpulumi"
-        echo "::set-env name=AZURE_STORAGE_ACCOUNT::TMP_AZURE_STORAGE_ACCOUNT"
+        echo "::set-env name=AZURE_STORAGE_ACCOUNT::$TMP_AZURE_STORAGE_ACCOUNT"
         pulumi login --cloud-url azblob://pulumi
         
     - name: Populate Env Vars with Azure Credentials
