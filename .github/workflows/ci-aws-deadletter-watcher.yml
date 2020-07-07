@@ -29,7 +29,7 @@ jobs:
         python -m pip install --upgrade pip pipenv
         pipenv install --dev
 
-    - name: Install dependencies using pipenv
+    - name: Run Unit Test
       run: |
         cd ./deadletter_listener
         pipenv run python -m pytest
