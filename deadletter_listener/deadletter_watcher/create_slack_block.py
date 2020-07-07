@@ -26,8 +26,13 @@ def create_slack_block(cluster: str, service: str, count: int,
 
     for deadletter in deadletters:
         deadletter_slack_block = create_deadletter_slack_block(
-            deadletter['message_id'], deadletter['tenant_name'],
-            deadletter['sender'], deadletter['recipient'])
+            trx_id=deadletter['message_id'],
+            tenant=deadletter['tenant_name'],
+            sender=deadletter['sender'],
+            receiver=deadletter['recipient'],
+            timestamp=deadletter['timestamp']
+        )
+
         block.append(deadletter_slack_block)
 
         actions={

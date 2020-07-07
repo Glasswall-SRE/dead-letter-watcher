@@ -7,9 +7,11 @@ def get_datetime(event_utc_time: str) -> datetime.datetime:
         event_utc_time: str in utc form of the datetime to process.
         Note: millisecond figure will be truncated and removed if present.
         This truncation is REQUIRED for use in the DataDog Log API
+        If there is a failure to parse the string, a RECOVERY ATTEMPT
+        will occour by returning the date time of now
 
     Returns:
-        datetime object
+        datetime object of string parsed, otherwise datetime of NOW
     """
     try:
         #Check if milliseconds in event_utc_time, if so remove

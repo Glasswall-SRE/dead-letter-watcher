@@ -78,7 +78,8 @@ def lambda_handler(event, context):
             'message_id': deadletter_id,
             'tenant_name': attributes['tenant_name'],
             'sender': attributes['sender_email'],
-            'recipient': attributes['recipient_email']
+            'recipient': attributes['recipient_email'],
+            'timestamp': attributes['timestamp']
         }
         deadletters.append(deadletter)
 
