@@ -45,6 +45,7 @@ jobs:
         
     - name: Populate Env Vars with Azure Credentials
       run: |
+        echo "SETTING ENV VARIABLES"
         echo "::set-env name=ARM_SUBSCRIPTION_ID::${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}"
         echo "::set-env name=AZURE_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
         echo "::set-env name=AZURE_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
@@ -61,5 +62,8 @@ jobs:
 # Pulumi Up
 
     - name: Run Pulumi Up
-      run: pulumi up --non-interactive --yes
+      run: |
+        export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export AZURE_STORAGE_ACCOUNT="stpulumi"
+        pulumi up --non-interactive --yes
 
