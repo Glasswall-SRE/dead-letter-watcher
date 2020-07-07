@@ -55,8 +55,8 @@ jobs:
         
     - name: Install Pulumi Azure Plugins
       run: |
-        pulumi plugin install resource azure v2.2.1
-        pulumi plugin install resource azuread v3.6.1
+        pulumi plugin install resource azure v3.6.1
+        pulumi plugin install resource azuread v2.2.1
 
 # Pulumi Up
 
