@@ -3,7 +3,7 @@ name: CI Deadletter Watcher
 on:
   pull_request:
     paths: 
-      - '.github/workflows/cd-aws-deadletter-watcher.yml'
+      - '.github/workflows/ci-aws-deadletter-watcher.yml'
       - 'deadletter_listener/**'
     branches: [master]
 
