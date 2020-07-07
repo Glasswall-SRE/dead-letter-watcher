@@ -39,10 +39,8 @@ jobs:
 
     - name: Log into Pulumi Backend
       run: |
-        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
-        echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
-        export TMP_AZURE_STORAGE_ACCOUNT="stpulumi"
-        echo "::set-env name=AZURE_STORAGE_ACCOUNT::$TMP_AZURE_STORAGE_ACCOUNT"
+        export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export AZURE_STORAGE_ACCOUNT="stpulumi"
         pulumi login --cloud-url azblob://pulumi
         
     - name: Populate Env Vars with Azure Credentials
@@ -66,6 +64,7 @@ jobs:
     - name: Run Pulumi Up
       run: |
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
-        pulumi login azblob://pulumi
+        export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export AZURE_STORAGE_ACCOUNT="stpulumi"
+        pulumi login --cloud-url azblob://pulumi
         pulumi up --non-interactive --yes
-
