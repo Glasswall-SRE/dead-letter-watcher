@@ -5,7 +5,7 @@ on:
     paths:
     - '.github/workflows/cd-azure-event-trigger.yml'
     - 'event_trigger/**'
-    branches: [master, fixes]
+    branches: [master]
 
 jobs:
   deploy:
