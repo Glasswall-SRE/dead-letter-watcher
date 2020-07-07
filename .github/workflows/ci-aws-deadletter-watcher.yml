@@ -58,5 +58,5 @@ jobs:
     - name: Lint with pylint
       run: |
         cd ./deadletter_listener
-        pipenv run pylint nsg_checker --disable="C,W,R"
+        pipenv run pylint deadletter_watcher --disable="C,W,R"
 
