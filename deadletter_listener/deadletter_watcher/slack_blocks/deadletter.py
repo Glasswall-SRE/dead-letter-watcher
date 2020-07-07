@@ -2,7 +2,7 @@ from typing import Dict
 
 
 def create_deadletter_slack_block(trx_id: str, tenant: str, sender: str,
-                                  receiver: str):
+                                  receiver: str, timestamp: str):
     """Create a Slack Block containing deadletter details
     Args:
         trx_id: message id from the deadlettered message
@@ -16,7 +16,7 @@ def create_deadletter_slack_block(trx_id: str, tenant: str, sender: str,
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant Name: {tenant}\nSender: {sender}\nReceiver: {receiver}"
+            "text": f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant Name: {tenant}\nSender: {sender}\nReceiver: {receiver}\nTime Rx: {timestamp}"
         }
     }
     

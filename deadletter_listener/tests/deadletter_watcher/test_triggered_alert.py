@@ -10,20 +10,18 @@ def test_get_deadletter_metric_value_as_int():
             "essentials": {
                 "alertContextVersion": "1.0"
             },
-            "alertContext": {
+            "context": {
                 "properties": None,
                 "condition": {
                     "windowSize":
                     "PT5M",
                     "allOf": [{
-                        "metricName":
-                        "DeadletteredMessages",
+                        "metricName": "DeadletteredMessages",
                         "dimensions": [{
                             "name": "EntityName",
                             "value": "smtptransmission"
                         }],
-                        "metricValue":
-                        31.1105
+                        "metricValue": 31.1105
                     }],
                     "windowStartTime":
                     "2019-03-22T13:40:03.064Z"
@@ -46,7 +44,7 @@ def test_get_deadletter_metric_value_as_str():
             "essentials": {
                 "alertContextVersion": "1.0"
             },
-            "alertContext": {
+            "context": {
                 "properties": None,
                 "condition": {
                     "windowSize":
@@ -82,7 +80,7 @@ def test_get_deadletter_metric_value_missing_key():
             "essentials": {
                 "alertContextVersion": "1.0"
             },
-            "alertContext": {
+            "context": {
                 "properties": None,
                 "condition": {
                     "windowSize":
@@ -116,7 +114,7 @@ def test_get_service_bus_queue_name():
             "essentials": {
                 "alertContextVersion": "1.0"
             },
-            "alertContext": {
+            "context": {
                 "properties": None,
                 "condition": {
                     "windowSize":
@@ -150,7 +148,7 @@ def test_get_service_bus_queue_name_missing_key():
             "essentials": {
                 "alertContextVersion": "1.0"
             },
-            "alertContext": {
+            "context": {
                 "properties": None,
                 "condition": {
                     "windowSize":

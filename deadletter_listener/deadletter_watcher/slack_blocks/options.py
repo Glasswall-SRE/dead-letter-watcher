@@ -21,7 +21,7 @@ def create_options_slack_block(msg_id: str ,options: List[str]) -> List[Dict]:
                 "emoji": True,
                 "text": option
             },
-            "value": f"value-{msg_id}-{option}"
+            "value": f"value-msgid={msg_id}-option={option}"
         }
         options_slack_blocks.append(slack_block)
     return options_slack_blocks

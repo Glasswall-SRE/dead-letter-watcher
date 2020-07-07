@@ -19,7 +19,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-        
+
+# Install Pulumi
+
     - name: Install Pulumi
       run: |
         cd ./event_trigger/
@@ -33,24 +35,41 @@ jobs:
       with:
         creds: ${{ secrets.DL_AZURE_CREDS }}
         
+# Configure for Azure
+
+    - name: Set Env Vars to Login to Pulumi
+      run: |
+        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export TMP_AZURE_STORAGE_ACCOUNT="stpulumi"
+        echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
+        echo "::set-env name=AZURE_STORAGE_ACCOUNT::$TMP_AZURE_STORAGE_ACCOUNT"
+
+
     - name: Log into Pulumi Backend
       run: |
-        export AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
-        export AZURE_STORAGE_ACCOUNT="stpulumi"
         pulumi login --cloud-url azblob://pulumi
         
     - name: Populate Env Vars with Azure Credentials
       run: |
+        echo "SETTING ENV VARIABLES"
         echo "::set-env name=ARM_SUBSCRIPTION_ID::${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}"
         echo "::set-env name=AZURE_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
         echo "::set-env name=AZURE_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
         echo "::set-env name=AZURE_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
-#        echo "::set-env name=ARM_CLIENT_ID::${{ secrets. }}"
-#        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets. }}"
-#        echo "::set-env name=ARM_TENANT_ID::${{ secrets. }}"
+        echo "::set-env name=ARM_CLIENT_ID::${{ secrets.ARM_CLIENT_ID }}"
+        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets.ARM_CLIENT_SECRET }}"
+        echo "::set-env name=ARM_TENANT_ID::${{ secrets.ARM_TENANT_ID }}"
         
     - name: Install Pulumi Azure Plugins
       run: |
-        pulumi plugin install resource azure v2.2.1
-        pulumi plugin install resource azuread v3.6.1
+        pulumi plugin install resource azure v3.6.1
+        pulumi plugin install resource azuread v2.2.1
 
+# Pulumi Up
+
+    - name: Run Pulumi Up
+      run: |
+        cd ./event_trigger/
+        export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
+        pulumi login --cloud-url azblob://pulumi
+        pulumi up --non-interactive --yes --stack "sre-deadletter-watcher-dev"
