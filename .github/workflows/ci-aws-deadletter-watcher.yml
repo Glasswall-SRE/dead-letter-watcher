@@ -25,12 +25,12 @@ jobs:
       
     - name: Install dependencies using pipenv
       run: |
+        cd ./deadletter_listener
         python -m pip install --upgrade pip pipenv
         pipenv install --dev
 
     - name: Install dependencies using pipenv
       run: |
-        cd ./deadletter_listener
         pipenv run python -m pytest
 
 
@@ -50,6 +50,7 @@ jobs:
 
     - name: Install dependencies using pipenv
       run: |
+        cd ./deadletter_listener
         python -m pip install --upgrade pip pipenv
         pipenv install --dev
     
