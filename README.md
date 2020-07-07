@@ -3,6 +3,12 @@
 # dead-letter-watcher
 A series of Azure Functions that wait for events to handle dead-letters
 
+# CI
+
+![CI Deadletter Watcher](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CI%20Deadletter%20Watcher/badge.svg)
+
+# CD
+
 ![CD Deadletter Watcher](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Deadletter%20Watcher/badge.svg)
 ![CD Deadletter Resolver](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Deadletter%20Resolver/badge.svg)
 ![CD Azure Event Trigger](https://github.com/glasswall-sre/dead-letter-watcher/workflows/CD%20Azure%20Event%20Trigger/badge.svg)
