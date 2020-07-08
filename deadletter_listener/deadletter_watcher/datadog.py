@@ -15,10 +15,8 @@ def validate(secrets: Dict) -> Dict:
     validate_headers = {
         'DD-API-KEY': secrets['DL-WATCHER']['DD_API_KEY'],
     }
-    validation_session = requests.Session()
-    validation_session.headers = validate_headers
-    response = validation_session.get(
-        "https://api.datadoghq.eu/api/v1/validate")
+    response = requests.get(
+        "https://api.datadoghq.eu/api/v1/validate", headers=validate_headers)
     return response
 
 
