@@ -1,0 +1,62 @@
+name: CI Deadletter Resolver
+
+on:
+  pull_request:
+    paths: 
+      - '.github/workflows/ci-aws-deadletter-resolver.yml'
+      - 'deadletter_resolver/**'
+    branches: [master]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+      
+    - name: Install dependencies using pipenv
+      run: |
+        cd ./deadletter_resolver
+        python -m pip install --upgrade pip pipenv
+        pipenv install --dev
+
+    - name: Run Unit Test
+      run: |
+        cd ./deadletter_resolver
+        pipenv run python -m pytest
+
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies using pipenv
+      run: |
+        cd ./deadletter_resolver
+        python -m pip install --upgrade pip pipenv
+        pipenv install --dev
+    
+    - name: Lint with pylint
+      run: |
+        cd ./deadletter_resolver
+        pipenv run pylint deadletter_resolver --disable="C,W,R"
+
