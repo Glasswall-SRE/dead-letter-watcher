@@ -71,5 +71,6 @@ jobs:
       run: |
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
+        pipenv shell
         pulumi login --cloud-url azblob://pulumi
         pulumi up --non-interactive --yes --stack "sre-deadletter-watcher-dev"
