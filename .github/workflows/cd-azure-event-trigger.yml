@@ -67,10 +67,17 @@ jobs:
         pulumi plugin install resource azure v3.6.1
         pulumi plugin install resource azuread v2.2.1
 
-    - name: Set AWS Credentials
-      run: |
-        echo "::set-env name=AWS_SECRET_KEY_ID::${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}"
-        echo "::set-env name=AWS_SECRET_ACCESS_KEY::${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}"
+#    - name: Set AWS Credentials
+#      run: |
+#        echo "::set-env name=AWS_SECRET_KEY_ID::${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}"
+#        echo "::set-env name=AWS_SECRET_ACCESS_KEY::${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}"
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
 
     - name: Run Pulumi Up
       run: |
