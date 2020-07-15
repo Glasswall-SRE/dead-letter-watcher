@@ -53,14 +53,13 @@ jobs:
         
     - name: Populate Env Vars with Azure Credentials
       run: |
-        echo "SETTING ENV VARIABLES"
         echo "::set-env name=ARM_SUBSCRIPTION_ID::${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}"
         echo "::set-env name=AZURE_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
         echo "::set-env name=AZURE_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
         echo "::set-env name=AZURE_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
-        echo "::set-env name=ARM_CLIENT_ID::${{ secrets.ARM_CLIENT_ID }}"
-        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets.ARM_CLIENT_SECRET }}"
-        echo "::set-env name=ARM_TENANT_ID::${{ secrets.ARM_TENANT_ID }}"
+        echo "::set-env name=ARM_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
+        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
+        echo "::set-env name=ARM_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
         
     - name: Install Pulumi Azure Plugins
       run: |
