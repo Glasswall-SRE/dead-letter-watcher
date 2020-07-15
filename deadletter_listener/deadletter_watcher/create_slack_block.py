@@ -37,7 +37,7 @@ def create_slack_block(cluster: str, service: str, count: int,
 
         actions={
             "type": "actions",
-            "elements": create_options_slack_block(deadletter['message_id'], ["replay", "reconstruct"])
+            "elements": create_options_slack_block(deadletter['message_id'], ["Replay", "Reconstruct"])
         }
         block.append(actions)
 
