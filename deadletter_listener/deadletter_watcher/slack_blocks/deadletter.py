@@ -16,7 +16,7 @@ def create_deadletter_slack_block(trx_id: str, tenant: str, sender: str,
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant Name: {tenant}\nSender: {sender}\nReceiver: {receiver}\nTime Rx: {timestamp}"
+            "text": f"*<fakeLink.datadoglink.com|{trx_id}>*\nTenant name: {tenant}\nSender: {sender}\nReceiver: {receiver}\nTime Received: {timestamp}"
         }
     }
     
