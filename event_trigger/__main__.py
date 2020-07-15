@@ -12,11 +12,11 @@ SHORT_APP_NAME = "dl-wtcr"
 ENDPOINT = secrets["PULUMI"]["DEADLETTER_WATCHER_ENDPOINT"]
 QUEUES = secrets["PULUMI"]["SERVICE_BUS_QUEUES"]
 
-test_cluster = ["dev"]
+test_cluster = ["uksprod1"]
 non_prod_clusters = ["dev", "qa1", "qa2", "pent", "perf", "stage"]
 prod_clusters = ["uksprod1", "uksprod2", "useprod1", "useprod2"]
 
-for cluster in prod_clusters:
+for cluster in test_cluster:
     SERVICE_BUS_RESOURCE_GROUP = secrets["PULUMI"]["clusters"][cluster][
         "SERVICE_BUS_RESOURCE_GROUP"]
     SB_NAMESPACE = secrets["PULUMI"]["clusters"][cluster][
