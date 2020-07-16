@@ -87,4 +87,6 @@ jobs:
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
-        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_name
+        pipenv run pulumi destroy -s sre-deadletter-watcher-dev
+#        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_name
+
