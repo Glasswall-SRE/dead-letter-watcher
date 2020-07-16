@@ -1,1 +1,2 @@
+secretsprovider: azurekeyvault://kv-pulumi-shared.vault.azure.net/keys/pulumi
 encryptionsalt: v1:McgVYn+7dzo=:v1:/FOfwviJ51rbDKaI:vMqSROa1HUSLnJ8sgXqFxsEaxgSiAQ==
