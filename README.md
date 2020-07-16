@@ -18,6 +18,7 @@ A series of Azure Functions that wait for events to handle dead-letters
 
 ![PyPI pyversions](https://img.shields.io/badge/python-3.8-blue)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+![](https://img.shields.io/badge/Glasswall%20SRE-Approved-success)
 
 </div>
 
