@@ -8,9 +8,9 @@ on:
     branches: [master]
 
 env:
-  pulumi-version: '2.4.0'
-  pulumi-azure-plugin-version: 'v3.6.1'
-  pulumi-azure-ad-plugin-version: 'v2.2.1'
+  pulumi_version: '2.4.0'
+  pulumi_azure_plugin_version: 'v3.6.1'
+  pulumi_azure_ad_plugin_version: 'v2.2.1'
 
 jobs:
   deploy:
@@ -34,7 +34,7 @@ jobs:
     - name: Install Pulumi
       run: |
         cd ./event_trigger/
-        curl -fsSL https://get.pulumi.com | sh -s -- --version $pulumi-version
+        curl -fsSL https://get.pulumi.com | sh -s -- --version $pulumi_version
         echo "Done CURL"
         echo "::add-path::/home/runner/.pulumi/bin"
         
@@ -68,8 +68,8 @@ jobs:
         
     - name: Install Pulumi Azure Plugins
       run: |
-        pulumi plugin install resource azure $pulumi-azure-plugin-version
-        pulumi plugin install resource azuread $pulumi-azure-ad-plugin-version
+        pulumi plugin install resource azure $pulumi_azure_plugin_version
+        pulumi plugin install resource azuread $pulumi_azure_ad_plugin_version
 
 
     - name: Configure AWS Credentials ☁️
