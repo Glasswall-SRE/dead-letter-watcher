@@ -7,6 +7,11 @@ on:
     - 'event_trigger/**'
     branches: [master]
 
+env:
+  pulumi-version: '2.4.0'
+  pulumi-azure-plugin-version: 'v3.6.1'
+  pulumi-azure-ad-plugin-version: 'v2.2.1'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,17 +24,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-        
+      
+      
     - name: Install Python Dependencies 🐍
       run: |
         python -m pip install --upgrade pip pipenv
 
-# Install Pulumi
 
     - name: Install Pulumi
       run: |
         cd ./event_trigger/
-        curl -fsSL https://get.pulumi.com | sh -s -- --version 2.4.0
+        curl -fsSL https://get.pulumi.com | sh -s -- --version $pulumi-version
         echo "Done CURL"
         echo "::add-path::/home/runner/.pulumi/bin"
         
@@ -37,19 +42,18 @@ jobs:
       with:
         creds: ${{ secrets.DL_AZURE_CREDS }}
         
-# Configure for Azure
 
     - name: Set Env Vars to Login to Pulumi
       run: |
-        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "stpulumi"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
-        export TMP_AZURE_STORAGE_ACCOUNT="stpulumi"
+        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
         echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
-        echo "::set-env name=AZURE_STORAGE_ACCOUNT::$TMP_AZURE_STORAGE_ACCOUNT"
+        echo "::set-env name=AZURE_STORAGE_ACCOUNT::${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"
 
 
     - name: Log into Pulumi Backend
       run: |
         pulumi login --cloud-url azblob://pulumi
+        
         
     - name: Populate Env Vars with Azure Credentials ☁️
       run: |
@@ -61,10 +65,12 @@ jobs:
         echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
         echo "::set-env name=ARM_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
         
+        
     - name: Install Pulumi Azure Plugins
       run: |
-        pulumi plugin install resource azure v3.6.1
-        pulumi plugin install resource azuread v2.2.1
+        pulumi plugin install resource azure $pulumi-azure-plugin-version
+        pulumi plugin install resource azuread $pulumi-azure-ad-plugin-version
+
 
     - name: Configure AWS Credentials ☁️
       uses: aws-actions/configure-aws-credentials@v1
@@ -72,6 +78,7 @@ jobs:
         aws-access-key-id: ${{ secrets.DEADLETTER_WATCHER_AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
+
 
     - name: Run Pulumi Up
       run: |
