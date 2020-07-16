@@ -11,6 +11,7 @@ env:
   pulumi_version: '2.4.0'
   pulumi_azure_plugin_version: 'v3.6.1'
   pulumi_azure_ad_plugin_version: 'v2.2.1'
+  pulumi_stack_name: sre-deadletter-watcher-dev
 
 jobs:
   deploy:
@@ -45,7 +46,7 @@ jobs:
 
     - name: Set Env Vars to Login to Pulumi
       run: |
-        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"  --resource-group "rg-pulumi-shared" --subscription "Enterprise Development Team" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
+        export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"  --resource-group "rg-pulumi-shared" --subscription "${{ secrets.PULUMI_STORAGE_SUBS_NAME }}" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
         echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
         echo "::set-env name=AZURE_STORAGE_ACCOUNT::${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"
 
@@ -86,4 +87,4 @@ jobs:
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
-        pipenv run pulumi up --non-interactive --yes --stack "sre-deadletter-watcher-dev"
+        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_name
