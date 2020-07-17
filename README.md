@@ -89,3 +89,9 @@ This service will
     }
 }
 ```
+
+## Local Testing
+Change working directory for the service intended for testing or amend any configs for test discovery to allow for the change of directory. Following that run the following command.
+```
+python -m pytest
+```
