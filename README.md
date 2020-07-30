@@ -21,6 +21,8 @@ A series of Azure Functions that wait for events to handle dead-letters
 ![](https://img.shields.io/badge/Glasswall%20SRE-Approved-success)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4146/badge)](https://bestpractices.coreinfrastructure.org/projects/4146)
 
+<img src="example_alert.png" alt="drawing" width="200"/>
+
 </div>
 
 ## Motivation
