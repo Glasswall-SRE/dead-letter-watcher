@@ -21,13 +21,14 @@ A series of Azure Functions that wait for events to handle dead-letters
 ![](https://img.shields.io/badge/Glasswall%20SRE-Approved-success)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4146/badge)](https://bestpractices.coreinfrastructure.org/projects/4146)
 
-<img src="example_alert.png" alt="drawing" width="200"/>
 
 </div>
 
 ## Motivation
 The frequency with which deadletter messages cause call outs required a method of reducing time spent during these incidents and provide a automated solution to gather nessessary information and action the deadletters.
 This repository provides the solution to allow an interactive way through Slack to action deadletters even from the comfort of a mobile device. 
+
+<img src="example_alert.png" alt="drawing" width="400"/>
 
 ## Architecture
 The archictecture comprises of 3 services:
