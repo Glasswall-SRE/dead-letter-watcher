@@ -10,6 +10,6 @@ def create_welcome_slack_block(cluster: str, service: str, count: str):
             "type":
             "mrkdwn",
             "text":
-            f"Hi SRE, Oopsie Whoopsie, UwU, You have Service Bus Dead Letters:\nCluster : {cluster}\nService : {service}\nCount : {count}"
+            f"Hi SRE, You have Service Bus Dead Letters:\nCluster : {cluster}\nService : {service}\nCount : {count}"
         },
     }
