@@ -59,11 +59,18 @@ jobs:
       run: |
         cd ./deadletter_listener
         pipenv run pylint deadletter_watcher --disable="C,W,R"
+        
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.7
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        fail_ci_if_error: true
 
-    - name: SonarCloud Scan 🔍
+    - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.2
       with:
         projectBaseDir: .
-      env:      
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
