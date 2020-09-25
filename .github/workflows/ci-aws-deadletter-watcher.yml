@@ -32,7 +32,7 @@ jobs:
     - name: Run Unit Test
       run: |
         cd ./deadletter_listener
-        pipenv run python -m pytest
+        pipenv run python -m pytest --cov nsg_checker --cov-report term-missing --cov-report xml
 
 
   lint:
