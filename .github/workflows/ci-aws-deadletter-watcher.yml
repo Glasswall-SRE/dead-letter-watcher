@@ -1,69 +1,71 @@
 name: CI Deadletter Watcher
 
 on:
+  push:
+    paths:
+      - ".github/workflows/ci-aws-deadletter-watcher.yml"
+      - "deadletter_listener/**"
+    branches: [master]
   pull_request:
-    paths: 
-      - '.github/workflows/ci-aws-deadletter-watcher.yml'
-      - 'deadletter_listener/**'
+    paths:
+      - ".github/workflows/ci-aws-deadletter-watcher.yml"
+      - "deadletter_listener/**"
+    types: [opened, synchronize, reopened]
     branches: [master]
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-      
-    - name: Install dependencies using pipenv
-      run: |
-        cd ./deadletter_listener
-        python -m pip install --upgrade pip pipenv
-        pipenv install --dev
-
-    - name: Run Unit Test
-      run: |
-        cd ./deadletter_listener
-        pipenv run python -m pytest
-        
-    - name: SonarCloud Scan 🔍
-      uses: SonarSource/sonarcloud-github-action@v1.2
-      with:
-        projectBaseDir: .
-      env:      
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies using pipenv
+        run: |
+          cd ./deadletter_listener
+          python -m pip install --upgrade pip pipenv
+          pipenv install --dev
+      - name: Run Unit Test
+        run: |
+          cd ./deadletter_listener
+          pipenv run python -m pytest
 
   lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies using pipenv
+        run: |
+          cd ./deadletter_listener
+          python -m pip install --upgrade pip pipenv
+          pipenv install --dev
+      - name: Lint with pylint
+        run: |
+          cd ./deadletter_listener
+          pipenv run pylint deadletter_watcher --disable="C,W,R"
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install dependencies using pipenv
-      run: |
-        cd ./deadletter_listener
-        python -m pip install --upgrade pip pipenv
-        pipenv install --dev
-    
-    - name: Lint with pylint
-      run: |
-        cd ./deadletter_listener
-        pipenv run pylint deadletter_watcher --disable="C,W,R"
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
