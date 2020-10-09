@@ -1,6 +1,7 @@
 import pytest
 import deadletter_watcher.triggered_alert as triggered_alert
 
+windowStartTime = "2019-03-22T13:40:03.064Z"
 
 def test_get_deadletter_metric_value_as_int():
     # Arrange
@@ -23,8 +24,7 @@ def test_get_deadletter_metric_value_as_int():
                         }],
                         "metricValue": 31.1105
                     }],
-                    "windowStartTime":
-                    "2019-03-22T13:40:03.064Z"
+                    "windowStartTime": windowStartTime
                 }
             }
         }
@@ -59,8 +59,7 @@ def test_get_deadletter_metric_value_as_str():
                         "metricValue":
                         "31.1105"
                     }],
-                    "windowStartTime":
-                    "2019-03-22T13:40:03.064Z"
+                    "windowStartTime": windowStartTime
                 }
             }
         }
@@ -93,8 +92,7 @@ def test_get_deadletter_metric_value_missing_key():
                             "value": "smtptransmission"
                         }]
                     }],
-                    "windowStartTime":
-                    "2019-03-22T13:40:03.064Z"
+                    "windowStartTime": windowStartTime
                 }
             }
         }
@@ -103,7 +101,7 @@ def test_get_deadletter_metric_value_missing_key():
     trigger_alert_obj = triggered_alert.TriggeredAlert(alert)
     # Assert
     with pytest.raises(KeyError):
-        metric_value = trigger_alert_obj.get_deadletter_metric_value()
+        trigger_alert_obj.get_deadletter_metric_value()
 
 
 def test_get_service_bus_queue_name():
@@ -127,8 +125,7 @@ def test_get_service_bus_queue_name():
                             "value": "smtptransmission"
                         }]
                     }],
-                    "windowStartTime":
-                    "2019-03-22T13:40:03.064Z"
+                    "windowStartTime": windowStartTime
                 }
             }
         }
@@ -159,8 +156,7 @@ def test_get_service_bus_queue_name_missing_key():
                             "name": "EntityName"
                         }]
                     }],
-                    "windowStartTime":
-                    "2019-03-22T13:40:03.064Z"
+                    "windowStartTime": windowStartTime
                 }
             }
         }
@@ -169,4 +165,4 @@ def test_get_service_bus_queue_name_missing_key():
     trigger_alert_obj = triggered_alert.TriggeredAlert(alert)
     # Assert
     with pytest.raises(KeyError):
-        service_bus_queue = trigger_alert_obj.get_service_bus_queue_name()
+        trigger_alert_obj.get_service_bus_queue_name()

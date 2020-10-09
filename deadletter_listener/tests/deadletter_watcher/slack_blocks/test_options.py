@@ -30,4 +30,4 @@ def test_create_options_slack_block_empty_list_of_options():
     # Act
     # Assert
     with pytest.raises(ValueError):
-        options_blocks = options_block.create_options_slack_block(msg_id, input_options)
+        options_block.create_options_slack_block(msg_id, input_options)

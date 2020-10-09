@@ -33,7 +33,7 @@ def __datadog_request_emails(trx_id: str, from_datetime: str, to_datetime: str,
         inspect if dict contains 'statusCode' key, if it does
         an issue had occoured. if a successful response from
         /v1/logs-queries/list evaluate the 'logs' key
-        
+
     """
     session = requests.Session()
     session.headers = {
@@ -68,7 +68,7 @@ def __datadog_request_tenant_id(trx_id: str, from_datetime: str, to_datetime: st
         inspect if dict contains 'statusCode' key, if it does
         an issue had occoured. if a successful response from
         /v1/logs-queries/list evaluate the 'logs' key
-        
+
     """
     session = requests.Session()
     session.headers = {
@@ -103,8 +103,7 @@ def __has_detected_issues(dd_response: Dict) -> Tuple[bool, Union[Dict, None]]:
     issues_detected = False
     response = None
 
-    if "statusCode" in dd_response:
-        if dd_response['statusCode'] != 200:
+    if "statusCode" in dd_response and dd_response['statusCode'] != 200:
             response = {
                 "tenant_name": dd_response["body"],
                 "sender_email": dd_response["body"],
@@ -112,15 +111,16 @@ def __has_detected_issues(dd_response: Dict) -> Tuple[bool, Union[Dict, None]]:
             }
 
     if len(dd_response['logs']) < 1:
+        _error = "Cannot Find in DataDog Log"
         response = {
-            "tenant_name": "Cannot Find in DataDog Log",
-            "sender_email": "Cannot Find in DataDog Log",
-            "recipient_email": "Cannot Find in DataDog Log"
+            "tenant_name": _error,
+            "sender_email": _error,
+            "recipient_email": _error
         }
 
     if response != None:
         issues_detected = True
-    
+
     return issues_detected, response
 
 def datadog_log_query(message_id: str, event_time: datetime.datetime,
@@ -129,7 +129,7 @@ def datadog_log_query(message_id: str, event_time: datetime.datetime,
     sender email, recipient email relating to transaction ID
     Args:
         message_id: the message ID used as transaction id in query
-        event_time: a datetime obj where the query will search 
+        event_time: a datetime obj where the query will search
         from 5 days before event_time to value of event_time
         secrets: secrets obtained from get_secret()
     Returns:

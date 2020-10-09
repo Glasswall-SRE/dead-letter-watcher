@@ -35,7 +35,7 @@ def test_get_datetime_bad_input():
     # Arrange
     parameter = "rubbish value"
     # Act
-    now = datetime_obj = deadletter_watcher.util.get_datetime(parameter)
+    now = deadletter_watcher.util.get_datetime(parameter)
     # Assert
     # Justification for assert. The NOW value obtained will be slight greater
     # than obtained a few miliseconds ago.
@@ -61,4 +61,4 @@ def test_set_datetime_bad_input():
     # Act
     # Assert
     with pytest.raises(Exception):
-        output = deadletter_watcher.util.set_datetime(None)
+        deadletter_watcher.util.set_datetime(None)
