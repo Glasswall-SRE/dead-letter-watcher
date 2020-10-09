@@ -20,7 +20,7 @@ def get_datetime(event_utc_time: str) -> datetime.datetime:
             event_utc_time = new_time[0]
 
         return datetime.datetime.fromisoformat(event_utc_time)
-    except:
+    except ValueError:
         # Could not parse get now time instead
         return datetime.datetime.now()
 
