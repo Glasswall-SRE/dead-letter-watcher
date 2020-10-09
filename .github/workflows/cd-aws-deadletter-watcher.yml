@@ -31,7 +31,7 @@ jobs:
         pipenv sync --dev
 
     - name: Install Serverless
-      run: npm install -g serverless
+      run: npm install -g serverless@2.4.0 
         
     - name: Serverless install python-requirements plugin
       run: |
