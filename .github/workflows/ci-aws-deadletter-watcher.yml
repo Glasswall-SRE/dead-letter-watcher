@@ -10,7 +10,6 @@ on:
     paths:
       - ".github/workflows/ci-aws-deadletter-watcher.yml"
       - "deadletter_listener/**"
-    types: [opened, synchronize, reopened]
     branches: [master]
 
 jobs:
