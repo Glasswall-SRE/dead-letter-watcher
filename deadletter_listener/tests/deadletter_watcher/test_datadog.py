@@ -94,9 +94,11 @@ def test_datadog_log_query_email_details_not_found_in_logs(patched_emails, patch
     # Act
     deadletter_details = datadog.datadog_log_query(message_id, now, secrets)
 
+    error_message = "Cannot Find in DataDog Log"
+
     # Assert
     assert patched_emails.called is True
     assert patched_tenant.called is False
-    assert deadletter_details['tenant_name'] == "Cannot Find in DataDog Log"
-    assert deadletter_details['sender_email'] == "Cannot Find in DataDog Log"
-    assert deadletter_details['recipient_email'] == "Cannot Find in DataDog Log"
+    assert deadletter_details['tenant_name'] == error_message
+    assert deadletter_details['sender_email'] == error_message
+    assert deadletter_details['recipient_email'] == error_message
