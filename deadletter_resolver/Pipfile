@@ -8,6 +8,7 @@ yapf = "*"
 
 [packages]
 victoria-email = "*"
+slackclient = "*"
 
 [requires]
 python_version = "3.8"
