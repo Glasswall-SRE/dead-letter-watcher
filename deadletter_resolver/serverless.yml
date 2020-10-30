@@ -6,6 +6,11 @@ provider:
   stage: dev
   region: eu-west-2
 
+package:
+  exclude:
+    - tests/**
+    - __pycache__/**
+
 functions:
   dl-resolver:
     handler: lambda_function.lambda_handler
@@ -13,3 +18,15 @@ functions:
       - http:
           path: resolve
           method: post
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: "secretsmanager:GetSecretValue"
+        Resource: "arn:aws:secretsmanager:eu-west-2:*:secret:deadletter-watcher-secrets-XOWbaE"
+
+plugins:
+  - serverless-python-requirements
+  - serverless-iam-roles-per-function
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux

@@ -1,29 +1,43 @@
 import json
-import json
 from urllib.parse import parse_qs
 from typing import Tuple
 from deadletter_resolver.payload import Payload
-
-def contact_victoria():
-    # TODO: add functionality
-    pass
+from slack import WebhookClient
+from victoria_email.replay_deadletters import replay
+from victoria_email.reconstruct_mail import reconstruct
 
 
 def lambda_handler(event, context):
     print(f"event:{event}, context:{context}")
-    # TODO complete the handler function
-    # payload = Payload( json.loads(parse_qs(event['body'])['payload'][0]) )
-    # user_id = payload.get_user_id()
-    # channel_id = payload.get_channel_id()
-    # block_id = payload.get_actioned_block_id()
-    # block = payload.get_slack_block(block_id)
-    # value = payload.get_selected_option_value()
+    # Get the payload from slack action button
+    payload = Payload(json.loads(parse_qs(event['body'])['payload'][0]))
+    # get selected option value
+    value = payload.get_selected_option_value()
+    # get response url
+    response_url = payload.get_response_url()
+
+    if value == 'Replay':
+        # TODO: invoke replay function from victoria email
+        message = 'Invoke victoria replay function'
+    elif value == 'Reconstruct':
+        # TODO: invoke replay function from victoria email
+        message = 'Invoke Victoria reconstruct function'
+    else:
+        message = 'No action item selected'
+
+    # acknowledge action to user
+    slack_client=WebhookClient(response_url)
+    text = "Thanks for your request, we'll process it shortly."
+    slack_client.send(text=text)
 
     body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
+        "message": message
     }
 
+    # send a response - TODO add a response
     response = {"statusCode": 200, "body": json.dumps(body)}
 
     return response
+
+
+
