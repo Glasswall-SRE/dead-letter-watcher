@@ -5,7 +5,7 @@ import json
 from typing import Dict, Union, Tuple
 
 
-def validate(secrets: Dict) -> Dict:
+def validate(secrets: Dict) -> requests.models.Response:
     """Validates datadog API key by contacting GET validate HTTP Request
     Args:
         secrets: secrets obtained from get_secret()
