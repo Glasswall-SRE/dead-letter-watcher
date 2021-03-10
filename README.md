@@ -32,11 +32,34 @@ This repository provides the solution to allow an interactive way through Slack 
 
 ## Architecture
 The archictecture comprises of 3 services:
-- [Event Trigger Service](#event-trigger-service)
-- [Deadletter Watcher Service](#deadletter-watcher-service)
-- [Deadletter Resolver Service](#deadletter-resolver-service)
+- Event Trigger Service
+- Deadletter Watcher Service
+- Deadletter Resolver Service
 
-![](architecture.png)
+<div align="center">
+
+![Level 1 Context Diagram](./architecture_diagram/dead_letter_watcher_Level_1_Context.png)
+### Level 1 Context Diagram
+
+<br>
+<br>
+<br>
+
+![Level 2 Container Diagram](./architecture_diagram/dead_letter_watcher_Level_2_Container.png)
+### Level 2 Container Diagram
+
+<br>
+<br>
+<br>
+
+![Level 3 Component Diagram](./architecture_diagram/dead_letter_watcher_Level_3_Component.png)
+### Level 3 Component Diagram
+
+<br>
+<br>
+<br>
+
+</div>
 
 ### Event Trigger Service
 This service deploys the nessassary components in order to:
