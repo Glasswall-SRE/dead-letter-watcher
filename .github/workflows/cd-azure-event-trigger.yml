@@ -42,7 +42,7 @@ jobs:
         cd ./event_trigger/
         curl -fsSL https://get.pulumi.com | sh -s -- --version $pulumi_version
         echo "Done CURL"
-        echo "::add-path::/home/runner/.pulumi/bin"
+        echo "/home/runner/.pulumi/bin" >> $GITHUB_PATH
         
     - uses: azure/login@v1.1
       with:
@@ -52,8 +52,8 @@ jobs:
     - name: Set Env Vars to Login to Pulumi
       run: |
         export TMP_AZURE_STORAGE_KEY=`az storage account keys list --account-name "${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"  --resource-group "rg-pulumi-shared" --subscription "${{ secrets.PULUMI_STORAGE_SUBS_NAME }}" --query "[0].value" | tr -d \ | sed -r 's/^"|"$//g'`
-        echo "::set-env name=AZURE_STORAGE_KEY::$TMP_AZURE_STORAGE_KEY"
-        echo "::set-env name=AZURE_STORAGE_ACCOUNT::${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}"
+        echo "AZURE_STORAGE_KEY=$TMP_AZURE_STORAGE_KEY" >> $GITHUB_ENV
+        echo "AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}" >> $GITHUB_ENV
 
 
     - name: Log into Pulumi Backend
@@ -63,13 +63,13 @@ jobs:
         
     - name: Populate Env Vars with Azure Credentials ☁️
       run: |
-        echo "::set-env name=ARM_SUBSCRIPTION_ID::${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}"
-        echo "::set-env name=AZURE_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
-        echo "::set-env name=AZURE_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
-        echo "::set-env name=AZURE_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
-        echo "::set-env name=ARM_CLIENT_ID::${{ secrets.PULUMI_AZURE_CLIENT_ID }}"
-        echo "::set-env name=ARM_CLIENT_SECRET::${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}"
-        echo "::set-env name=ARM_TENANT_ID::${{ secrets.PULUMI_AZURE_TENANT_ID }}"
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+        echo "AZURE_CLIENT_ID=${{ secrets.PULUMI_AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "AZURE_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "AZURE_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
+        echo "ARM_CLIENT_ID=${{ secrets.PULUMI_AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
         
         
     - name: Install Pulumi Azure Plugins
