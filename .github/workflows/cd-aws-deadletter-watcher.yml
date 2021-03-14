@@ -6,6 +6,11 @@ on:
       - '.github/workflows/cd-aws-deadletter-watcher.yml'
       - 'deadletter_listener/**'
     branches: [master]
+  workflow_dispatch:
+    paths:
+      - '.github/workflows/cd-aws-deadletter-watcher.yml'
+      - 'deadletter_listener/**'
+    branches: [ master ]
 
 jobs:
   deploy:

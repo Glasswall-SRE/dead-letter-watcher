@@ -6,6 +6,11 @@ on:
       - '.github/workflows/cd-aws-deadletter-resolver.yml'
       - 'deadletter_resolver/**'
     branches: [master]
+  workflow_dispatch:
+    paths:
+      - '.github/workflows/cd-aws-deadletter-resolver.yml'
+      - 'deadletter_resolver/**'
+    branches: [ master ]
 
 jobs:
   deploy:
