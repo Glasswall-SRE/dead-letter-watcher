@@ -16,7 +16,7 @@ env:
   pulumi_version: '2.4.0'
   pulumi_azure_plugin_version: 'v3.6.1'
   pulumi_azure_ad_plugin_version: 'v2.2.1'
-  pulumi_stack_name: sre-deadletter-watcher-prod
+  pulumi_stack_name: sre-deadletter-watcher-dev
 
 jobs:
   deploy:
