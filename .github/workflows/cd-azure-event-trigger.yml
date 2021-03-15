@@ -63,7 +63,7 @@ jobs:
         
     - name: Populate Env Vars with Azure Credentials ☁️
       run: |
-        echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
         echo "AZURE_CLIENT_ID=${{ secrets.PULUMI_AZURE_CLIENT_ID }}" >> $GITHUB_ENV
         echo "AZURE_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "AZURE_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
