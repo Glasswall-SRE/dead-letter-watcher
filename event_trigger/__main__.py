@@ -16,7 +16,7 @@ test_cluster = ["uksprod1"]
 non_prod_clusters = ["dev", "qa1", "qa2", "pent", "perf", "stage"]
 prod_clusters = ["uksprod1", "uksprod2", "useprod1", "useprod2"]
 
-for cluster in prod_clusters:
+for cluster in non_prod_clusters:
     SERVICE_BUS_RESOURCE_GROUP = secrets["PULUMI"]["clusters"][cluster][
         "SERVICE_BUS_RESOURCE_GROUP"]
     SB_NAMESPACE = secrets["PULUMI"]["clusters"][cluster][
