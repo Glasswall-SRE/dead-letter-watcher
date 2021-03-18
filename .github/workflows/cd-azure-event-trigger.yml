@@ -69,11 +69,13 @@ jobs:
     - if: ${{ github.event.inputs.stack == 'dev'}}
       name: Populate subscription id for dev stack
       run: |
+        echo "Populate subscription id for dev stack"
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
     - if: ${{ github.event.inputs.stack == 'prod'}}
       name: Populate subscription id for prod stack
       run: |
+        echo "Populate subscription id for prod stack"
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
     - name: Populate Env Vars with Azure Credentials ☁️
@@ -107,7 +109,7 @@ jobs:
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set stack $stack
-        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_name
+        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-${{ github.event.inputs.stack}}
 
 #    - name: Run Pulumi Destroy
 #      run: |
@@ -115,5 +117,5 @@ jobs:
 #        export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
 #        pipenv install
 #        pulumi login --cloud-url azblob://pulumi
-#        pipenv run pulumi destroy --non-interactive --yes --stack $pulumi_stack_name
+#        pipenv run pulumi destroy --non-interactive --yes --stack sre-deadletter-watcher-${{ github.event.inputs.stack}}
 
