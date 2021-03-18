@@ -101,23 +101,23 @@ jobs:
         aws-secret-access-key: ${{ secrets.DEADLETTER_WATCHER_AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
 
-
-    - name: Set up Pulumi
+    - if: ${{ github.event.inputs.stack == 'dev'}}
+      name: Run pulumi up for dev
       run: |
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
-
-    - if: ${{ github.event.inputs.stack == 'dev'}}
-      name: Run pulumi up for dev
-      run: |
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
         pipenv run pulumi config set cluster dev
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
       run: |
+        cd ./event_trigger/
+        export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
+        pipenv install
+        pulumi login --cloud-url azblob://pulumi
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
         pipenv run pulumi config set cluster prod
 
