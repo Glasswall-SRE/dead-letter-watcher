@@ -66,12 +66,12 @@ jobs:
       run: |
         pulumi login --cloud-url azblob://pulumi
 
-    - if: eq($stack, 'dev')
+    - if: ${{ github.event.inputs.stack == 'dev'}}
       name: Populate subscription id for dev stack
       run: |
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
-    - if: eq($stack, 'prod')
+    - if: ${{ github.event.inputs.stack == 'prod'}}
       name: Populate subscription id for prod stack
       run: |
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
