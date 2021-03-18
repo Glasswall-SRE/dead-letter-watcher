@@ -9,7 +9,7 @@ secrets = json.loads(get_secret())
 
 #pulumi config set stack dev
 config = pulumi.Config()
-stack = config.get('stack')
+stack = config.get('cluster')
 
 APP_NAME = "dead-letter-watcher"
 SHORT_APP_NAME = "dl-wtcr"

@@ -21,8 +21,6 @@ env:
   pulumi_version: '2.4.0'
   pulumi_azure_plugin_version: 'v3.6.1'
   pulumi_azure_ad_plugin_version: 'v2.2.1'
-  stack: ${{ github.event.inputs.stack}}
-  pulumi_stack_name: sre-deadletter-watcher-${{ github.event.inputs.stack}}
 
 jobs:
   deploy:
@@ -72,7 +70,7 @@ jobs:
         echo "Populate subscription id for dev stack"
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
-    - if: ${{ github.event.inputs.stack == 'prod'}}
+    - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Populate subscription id for prod stack
       run: |
         echo "Populate subscription id for prod stack"
@@ -108,8 +106,18 @@ jobs:
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
-        pulumi config set stack $stack
-        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-${{ github.event.inputs.stack}}
+
+    - if: ${{ github.event.inputs.stack == 'dev'}}
+      name: Run pulumi up for dev
+      run: |
+        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-dev
+        pulumi config set cluster dev
+
+    - if: ${{ github.event.inputs.stack != 'dev'}}
+      name: Run pulumi up for prod
+      run: |
+        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-prod
+        pulumi config set cluster prod
 
 #    - name: Run Pulumi Destroy
 #      run: |
