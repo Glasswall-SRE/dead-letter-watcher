@@ -108,7 +108,7 @@ jobs:
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
-        pulumi config set cluster dev --non-interactive --yes --stack $pulumi_stack_prod_name
+        pulumi config set cluster dev --non-interactive --yes --stack $pulumi_stack_dev_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
