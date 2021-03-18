@@ -7,6 +7,11 @@ on:
     - 'event_trigger/**'
     branches: [master]
   workflow_dispatch:
+    inputs:
+      stack:
+        description: 'Stack'
+        required: false
+        default: 'prod'
     paths:
     - '.github/workflows/cd-azure-event-trigger.yml'
     - 'event_trigger/**'
@@ -16,7 +21,8 @@ env:
   pulumi_version: '2.4.0'
   pulumi_azure_plugin_version: 'v3.6.1'
   pulumi_azure_ad_plugin_version: 'v2.2.1'
-  pulumi_stack_name: sre-deadletter-watcher-dev
+  stack: ${{ github.event.inputs.stack}}
+  pulumi_stack_name: sre-deadletter-watcher-${{ github.event.inputs.stack}}
 
 jobs:
   deploy:
@@ -59,11 +65,19 @@ jobs:
     - name: Log into Pulumi Backend
       run: |
         pulumi login --cloud-url azblob://pulumi
-        
-        
-    - name: Populate Env Vars with Azure Credentials ☁️
+
+    - if: eq($stack, 'dev')
+      name: Populate subscription id for dev stack
       run: |
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+
+    - if: eq($stack, 'prod')
+      name: Populate subscription id for prod stack
+      run: |
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+
+    - name: Populate Env Vars with Azure Credentials ☁️
+      run: |
         echo "AZURE_CLIENT_ID=${{ secrets.PULUMI_AZURE_CLIENT_ID }}" >> $GITHUB_ENV
         echo "AZURE_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "AZURE_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
@@ -92,6 +106,7 @@ jobs:
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
+        pulumi config set stack $stack
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_name
 
 #    - name: Run Pulumi Destroy

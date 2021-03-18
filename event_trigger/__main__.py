@@ -3,8 +3,13 @@ from secrets import get_secret
 import pulumi_azure as azure
 from pulumi_azure import monitoring
 from pulumi_azure import core
+import pulumi
 
 secrets = json.loads(get_secret())
+
+#pulumi config set stack dev
+config = pulumi.Config()
+stack = config.get('stack')
 
 APP_NAME = "dead-letter-watcher"
 SHORT_APP_NAME = "dl-wtcr"
@@ -16,7 +21,8 @@ test_cluster = ["uksprod1"]
 non_prod_clusters = ["dev", "qa1", "pent", "perf", "stage"]
 prod_clusters = ["uksprod1", "uksprod2", "useprod1", "useprod2"]
 
-for cluster in non_prod_clusters:
+clusters = non_prod_clusters if stack == 'dev' else prod_clusters
+for cluster in clusters:
     SERVICE_BUS_RESOURCE_GROUP = secrets["PULUMI"]["clusters"][cluster][
         "SERVICE_BUS_RESOURCE_GROUP"]
     SB_NAMESPACE = secrets["PULUMI"]["clusters"][cluster][
