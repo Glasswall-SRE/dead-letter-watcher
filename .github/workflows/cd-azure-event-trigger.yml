@@ -21,6 +21,8 @@ env:
   pulumi_version: '2.4.0'
   pulumi_azure_plugin_version: 'v3.6.1'
   pulumi_azure_ad_plugin_version: 'v2.2.1'
+  pulumi_stack_prod_name: sre-deadletter-watcher-prod
+  pulumi_stack_dev_name: sre-deadletter-watcher-dev
 
 jobs:
   deploy:
@@ -34,8 +36,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-      
-      
+
+
     - name: Install Python Dependencies 🐍
       run: |
         python -m pip install --upgrade pip pipenv
@@ -47,11 +49,11 @@ jobs:
         curl -fsSL https://get.pulumi.com | sh -s -- --version $pulumi_version
         echo "Done CURL"
         echo "/home/runner/.pulumi/bin" >> $GITHUB_PATH
-        
+
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.DL_AZURE_CREDS }}
-        
+
 
     - name: Set Env Vars to Login to Pulumi
       run: |
@@ -84,8 +86,8 @@ jobs:
         echo "ARM_CLIENT_ID=${{ secrets.PULUMI_AZURE_CLIENT_ID }}" >> $GITHUB_ENV
         echo "ARM_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
-        
-        
+
+
     - name: Install Pulumi Azure Plugins
       run: |
         pulumi plugin install resource azure $pulumi_azure_plugin_version
@@ -100,7 +102,7 @@ jobs:
         aws-region: eu-west-2
 
 
-    - name: Run Pulumi Up
+    - name: Set up Pulumi
       run: |
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
@@ -110,13 +112,13 @@ jobs:
     - if: ${{ github.event.inputs.stack == 'dev'}}
       name: Run pulumi up for dev
       run: |
-        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-dev
+        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
         pipenv run pulumi config set cluster dev
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
       run: |
-        pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-prod
+        pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
         pipenv run pulumi config set cluster prod
 
 #    - name: Run Pulumi Destroy
