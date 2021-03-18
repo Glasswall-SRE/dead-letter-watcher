@@ -111,13 +111,13 @@ jobs:
       name: Run pulumi up for dev
       run: |
         pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-dev
-        pulumi config set cluster dev
+        pipenv run pulumi config set cluster dev
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
       run: |
         pipenv run pulumi up --non-interactive --yes --stack sre-deadletter-watcher-prod
-        pulumi config set cluster prod
+        pipenv run pulumi config set cluster prod
 
 #    - name: Run Pulumi Destroy
 #      run: |
