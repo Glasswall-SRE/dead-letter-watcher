@@ -5,11 +5,14 @@ from pulumi_azure import monitoring
 from pulumi_azure import core
 import pulumi
 
-secrets = json.loads(get_secret())
-
 #pulumi config set stack dev
 config = pulumi.Config()
 stack = config.get('cluster')
+sbList = config.get('sbList')
+
+print(json.loads(sbList))
+
+secrets = json.loads(get_secret())
 
 APP_NAME = "dead-letter-watcher"
 SHORT_APP_NAME = "dl-wtcr"
