@@ -88,7 +88,8 @@ jobs:
 
     - name: Fetch Servicebus list from azure
       run: |
-        echo SB_LIST=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"` >> $GITHUB_ENV
+        export sbList=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
+        echo "SB_LIST=$sbList" >> $GITHUB_ENV
         echo tojson("${{env.SB_LIST}}")
 
     - name: Install Pulumi Azure Plugins
