@@ -1,18 +1,16 @@
 import json
-from secrets import get_secret
+from secrets import get_secret, update_secret
 import pulumi_azure as azure
 from pulumi_azure import monitoring
 from pulumi_azure import core
 import pulumi
 
-#pulumi config set stack dev
+#pulumi configs
 config = pulumi.Config()
 stack = config.get('cluster')
 sb_list = config.get('SB_LIST')
 
-print(sb_list)
-print(json.loads(sb_list))
-
+update_secret(sb_list)
 secrets = json.loads(get_secret())
 
 APP_NAME = "dead-letter-watcher"
