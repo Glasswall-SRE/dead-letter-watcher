@@ -61,8 +61,11 @@ def update_secret(sb_list):
 
     """
     if sb_list:
-        for sb in json.loads(sb_list):
+        service_bus_details = json.loads(sb_list)
+        for sb in service_bus_details:
             sb_conn = get_service_bus_connection(sb['namespace'], sb['resourceGroup'])
             sb['connection_str'] = sb_conn
-    print(sb_list)
+            print("successfully retrieved connection str")
+            print(sb_conn)
+        print(service_bus_details)
 
