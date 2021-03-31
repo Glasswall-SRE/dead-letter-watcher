@@ -8,9 +8,9 @@ import pulumi
 #pulumi config set stack dev
 config = pulumi.Config()
 stack = config.get('cluster')
-sbList = config.get('sbList')
+sb_list = config.get('SB_LIST')
 
-print(json.loads(sbList))
+print(json.loads(sb_list))
 
 secrets = json.loads(get_secret())
 
