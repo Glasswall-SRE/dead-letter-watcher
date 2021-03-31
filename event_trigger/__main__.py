@@ -9,6 +9,9 @@ import pulumi
 config = pulumi.Config()
 stack = config.get('cluster')
 sb_list = config.get('SB_LIST')
+cred = config.get('CRED')
+
+print(cred)
 
 update_secret(sb_list)
 secrets = json.loads(get_secret())
