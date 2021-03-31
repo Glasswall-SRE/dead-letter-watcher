@@ -69,14 +69,12 @@ jobs:
       name: Populate subscription id for dev stack
       run: |
         echo "Populate subscription id for dev stack"
-        export ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ENTERPRISE_DEV_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Populate subscription id for prod stack
       run: |
         echo "Populate subscription id for prod stack"
-        export ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.FILETRUST_CLOUD_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
     - name: Populate Env Vars with Azure Credentials ☁️
@@ -90,8 +88,8 @@ jobs:
 
     - name: Fetch Servicebus list from azure
       run: |
-        export SB_LIST=`az servicebus namespace list --subscription "${{ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
-        echo tojson("${{SB_LIST}}")
+        export SB_LIST=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"` >> $GITHUB_ENV
+        echo tojson("${{env.SB_LIST}}")
 
     - name: Install Pulumi Azure Plugins
       run: |
@@ -124,7 +122,7 @@ jobs:
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster prod --non-interactive --stack $pulumi_stack_prod_name
-        pulumi config set sbList tojson("${{SB_LIST}}") --non-interactive --stack $pulumi_stack_prod_name
+        pulumi config set sbList tojson("${{env.SB_LIST}}") --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
 
 #    - name: Run Pulumi Destroy
