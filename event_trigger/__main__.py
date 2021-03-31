@@ -10,6 +10,7 @@ config = pulumi.Config()
 stack = config.get('cluster')
 sb_list = config.get('SB_LIST')
 
+print(sb_list)
 print(json.loads(sb_list))
 
 secrets = json.loads(get_secret())

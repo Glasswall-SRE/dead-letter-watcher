@@ -86,12 +86,6 @@ jobs:
         echo "ARM_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
-    - name: Fetch Servicebus list from azure
-      run: |
-        export sbList=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
-        echo "SB_LIST=$sbList" >> $GITHUB_ENV
-        echo tojson("${{env.SB_LIST}}")
-
     - name: Install Pulumi Azure Plugins
       run: |
         pulumi plugin install resource azure $pulumi_azure_plugin_version
@@ -108,22 +102,25 @@ jobs:
     - if: ${{ github.event.inputs.stack == 'dev'}}
       name: Run pulumi up for dev
       run: |
+        export sbList=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster dev --non-interactive --stack $pulumi_stack_dev_name
+        pulumi config set SB_LIST $sbList --non-interactive --stack $pulumi_stack_dev_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
       run: |
+        export sbList=`az servicebus namespace list --subscription "${{env.ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster prod --non-interactive --stack $pulumi_stack_prod_name
-        pulumi config set sbList tojson("${{env.SB_LIST}}") --non-interactive --stack $pulumi_stack_prod_name
+        pulumi config set SB_LIST $sbList --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
 
 #    - name: Run Pulumi Destroy
