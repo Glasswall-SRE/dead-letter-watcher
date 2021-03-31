@@ -61,7 +61,6 @@ jobs:
         echo "AZURE_STORAGE_KEY=$TMP_AZURE_STORAGE_KEY" >> $GITHUB_ENV
         echo "AZURE_STORAGE_ACCOUNT=${{ secrets.AZURE_PULUMI_STORAGE_ACCOUNT_NAME}}" >> $GITHUB_ENV
 
-
     - name: Log into Pulumi Backend
       run: |
         pulumi login --cloud-url azblob://pulumi
@@ -87,6 +86,10 @@ jobs:
         echo "ARM_CLIENT_SECRET=${{ secrets.PULUMI_AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.PULUMI_AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
+    - name: Fetch Servicebus list from azure
+      run: |
+        export sbList=`az servicebus namespace list --subscription "${{ARM_SUBSCRIPTION_ID}}" --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
+        echo tojson("${{sbList}}")
 
     - name: Install Pulumi Azure Plugins
       run: |
@@ -119,6 +122,7 @@ jobs:
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster prod --non-interactive --stack $pulumi_stack_prod_name
+        pulumi config set sbList tojson("${{sbList}}") --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
 
 #    - name: Run Pulumi Destroy
