@@ -108,7 +108,7 @@ jobs:
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster dev --non-interactive --stack $pulumi_stack_dev_name
-        pulumi config set SB_LIST $sbList --non-interactive --stack $pulumi_stack_dev_name
+        pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_dev_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
@@ -120,7 +120,7 @@ jobs:
         pipenv install
         pulumi login --cloud-url azblob://pulumi
         pulumi config set cluster prod --non-interactive --stack $pulumi_stack_prod_name
-        pulumi config set SB_LIST $sbList --non-interactive --stack $pulumi_stack_prod_name
+        pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
 
 #    - name: Run Pulumi Destroy
