@@ -111,6 +111,7 @@ jobs:
         pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_dev_name
         pulumi config set CRED "${{ secrets.DL_AZURE_CREDS }}" --non-interactive --stack $pulumi_stack_dev_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
+        echo `az account list`
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
@@ -124,6 +125,7 @@ jobs:
         pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_prod_name
         pulumi config set CRED "${{ secrets.DL_AZURE_CREDS }}" --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
+        echo `az account list`
 
 #    - name: Run Pulumi Destroy
 #      run: |
