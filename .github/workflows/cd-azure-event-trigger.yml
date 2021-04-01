@@ -102,7 +102,7 @@ jobs:
     - if: ${{ github.event.inputs.stack == 'dev'}}
       name: Run pulumi up for dev
       run: |
-        export sbList=`az servicebus namespace list --query "[?tags.group=='FileTrust'] | [?tags.area=='nonprod'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
+        export sbList=`az servicebus namespace list --subscription 'FileTrust Cloud - DinisCruz' --query "[?tags.group=='FileTrust'] | [?tags.area=='nonprod'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
@@ -111,11 +111,12 @@ jobs:
         pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_dev_name
         pulumi config set CRED "${{ secrets.DL_AZURE_CREDS }}" --non-interactive --stack $pulumi_stack_dev_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_dev_name
+        echo `az account list`
 
     - if: ${{ github.event.inputs.stack != 'dev'}}
       name: Run pulumi up for prod
       run: |
-        export sbList=`az servicebus namespace list --subscription 'FileTrust Cloud' --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
+        export sbList=`az servicebus namespace list --subscription 'FileTrust Cloud - Interserve' --query "[?tags.group=='FileTrust'].{namespace: name, resourceGroup: resourceGroup, area: tags.area}"`
         cd ./event_trigger/
         export PULUMI_SECRET_KEY=${{ secrets.PULUMI_SECRET_KEY }}
         pipenv install
@@ -124,6 +125,7 @@ jobs:
         pulumi config set SB_LIST "$sbList" --non-interactive --stack $pulumi_stack_prod_name
         pulumi config set CRED "${{ secrets.DL_AZURE_CREDS }}" --non-interactive --stack $pulumi_stack_prod_name
         pipenv run pulumi up --non-interactive --yes --stack $pulumi_stack_prod_name
+        echo `az account list`
 
 #    - name: Run Pulumi Destroy
 #      run: |
