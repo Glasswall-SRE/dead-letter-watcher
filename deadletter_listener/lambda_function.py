@@ -59,39 +59,39 @@ def lambda_handler(event, context):
     secrets = json.loads(get_secret())
     metric_val = triggered_alert.get_deadletter_metric_value()
 
-    if metric_val:
-        # Gather required details for processing
-        service_bus_name = triggered_alert.get_service_bus_name()
-        queue = triggered_alert.get_service_bus_queue_name()
-        cluster = get_cluster(service_bus_name)
+    #if metric_val:
+    # Gather required details for processing
+    service_bus_name = triggered_alert.get_service_bus_name()
+    queue = triggered_alert.get_service_bus_queue_name()
+    cluster = get_cluster(service_bus_name)
 
-        triggered_time = triggered_alert.get_fired_datetime()
-        triggered_time_obj = get_datetime(triggered_time)
-        deadletter_ids = obtain_deadletter_ids(queue, cluster, secrets)
+    triggered_time = triggered_alert.get_fired_datetime()
+    triggered_time_obj = get_datetime(triggered_time)
+    deadletter_ids = obtain_deadletter_ids(queue, cluster, secrets)
 
-        if deadletter_ids:
-            deadletters = []
-            for deadletter_id in deadletter_ids:
+    if deadletter_ids:
+        deadletters = []
+        for deadletter_id in deadletter_ids:
 
-                attributes = datadog_log_query(deadletter_id, triggered_time_obj,
-                                               secrets)
+            attributes = datadog_log_query(deadletter_id, triggered_time_obj,
+                                           secrets)
 
-                deadletter = {
-                    'message_id': deadletter_id,
-                    'tenant_name': attributes['tenant_name'],
-                    'sender': attributes['sender_email'],
-                    'recipient': attributes['recipient_email'],
-                    'timestamp': attributes.get('timestamp')
-                }
-                deadletters.append(deadletter)
+            deadletter = {
+                'message_id': deadletter_id,
+                'tenant_name': attributes['tenant_name'],
+                'sender': attributes['sender_email'],
+                'recipient': attributes['recipient_email'],
+                'timestamp': attributes.get('timestamp')
+            }
+            deadletters.append(deadletter)
 
-            slack_block = create_slack_block(
-                cluster=cluster,
-                service=queue,
-                count=str(triggered_alert.get_deadletter_metric_value()),
-                deadletters=deadletters)
+        slack_block = create_slack_block(
+            cluster=cluster,
+            service=queue,
+            count=str(triggered_alert.get_deadletter_metric_value()),
+            deadletters=deadletters)
 
-            response = send_slack_notification(slack_block, secrets)
+        response = send_slack_notification(slack_block, secrets)
 
-            print(f"response:{response}")
-            return response
+        print(f"response:{response}")
+        return response
