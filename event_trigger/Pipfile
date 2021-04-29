@@ -9,6 +9,13 @@ verify_ssl = true
 pulumi = "*"
 pulumi-azure = "*"
 boto3 = "*"
+azure-mgmt-monitor = "*"
+azure-identity = "*"
+azure-common = "*"
+azure-cli-core = "*"
+azure-mgmt-resource = "*"
+azure-mgmt-servicebus = "*"
+azure-servicebus = "*"
 
 [requires]
 python_version = "3.8"

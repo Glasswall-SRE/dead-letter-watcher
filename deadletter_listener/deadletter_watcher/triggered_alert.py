@@ -33,6 +33,7 @@ class TriggeredAlert:
         """
         #TODO: What if multiple Queues are alerted on
         try:
+            #common_alert_schema is not enabled
             condition = self.alert['data']['context']['condition']
             for x in condition['allOf']:
                 if x['metricName'] == "DeadletteredMessages":
