@@ -50,6 +50,5 @@ jobs:
       run: |
         cd ./event_trigger/
         pipenv install
-        pipenv shell
-        python set_up_alerts.py
+        pipenv run python set_up_alerts.py
 
