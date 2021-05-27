@@ -132,3 +132,4 @@ secrets.json
 .serverless
 .vscode
 reference.txt
+.DS_Store
